@@ -4,4 +4,17 @@
 
 # EmailItServer
 
-The backend server for EmailIt with a Node-Red server builtin. Used by ScriptBar and BullitenBoard.
+The backend server for EmailIt with a Node-Red server builtin. It is also used by ScriptBar and BullitenBoard (in the works). This program requires [Node](https://nodejs.org/en/) to be installed on your computer.
+
+Only downloaded, you need to install the libraries by:
+
+```sh
+npm install
+```
+
+You can then run the server with:
+
+```sh
+node server.js
+```
+
