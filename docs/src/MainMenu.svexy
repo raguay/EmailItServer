@@ -1,0 +1,40 @@
+# Main Menu
+
+![Main Menu](http://localhost:9978/imgs/MainMenu.png)
+
+By clicking on the hamburger icon on the lower far left corner, you 
+will open the main menu shown above. This give you access to the
+script editor, the regular expressions editor, template editor, and the 
+command console. You can also access the installers for
+**Alfred**, **Keyboard Maestro**, **Dropzone 3**, **PopClip**, and
+**LaunchBar**. These scripts allows you to copy files or text to
+specified notepads. It also allows you to execute scripts on text
+sent to it as well. There is a [fman](https://fman.io) plugin for
+working with ScriptPad.
+
+You can also change the preferences from the main menu by selecting
+`Preferences`. The preference page will describe everything you can
+change there.
+
+The last option, `Quit`, will exit out of the ScriptPad program. If
+the program isn't running, the scripts for the **Alfred**, **fman**,
+**Keyboard Maestro**, **Dropzone 3**, **PopClip**, and **LaunchBar**
+will not function as well.
+
+![About Dialog](http://localhost:9978/imgs/About.png)
+
+If you select `About` in the main menu, you will see the above about
+dialog. This dialog tells about who created the program and the third
+party tools used. This program is created with
+**[Svelte v3](https://svelte.dev)**,
+**[Mask](https://github.com/jakedeichert/mask)**, and
+**[NW.js](https://nwjs.io/)**.
+
+From this main menu, you can open the 
+[Command Console](http://localhost:9978/CommandConsole) which gives access 
+to [Node-Red](/#/NodeRed) console. From there you can 
+run different scripting commands and actions.
+
+The `Close` button will close the dialog. Openning any other dialog
+will also close this dialog.
+

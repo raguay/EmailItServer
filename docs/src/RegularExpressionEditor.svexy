@@ -1,0 +1,14 @@
+# Regular Expression Editor
+
+![Regular Expression Editor](http://localhost:9978/imgs/RegExpEditor.png)
+
+The Regular Expression editor will show you the results of your regular 
+expressions, and color code the sub-matches (embedded sub-matches are not
+supported). You can save your regular expressions and recall them by name
+given. You invoke the regular expression editor with `<ctrl>-r`. You can list
+the defined regular expressions with `<ctrl>-m`. The editor will allow you to
+save the regular expressions with the `Save` button and perform all the
+substitutions with the `Change All` button. You can also extract the selected
+entries using the `Extract` button. Pressing `<ctrl>-r`, `Extract` button, or the
+`Change All` button will close the regular expressions editor. 
+

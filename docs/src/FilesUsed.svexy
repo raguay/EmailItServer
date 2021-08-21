@@ -1,0 +1,11 @@
+# Files Used By NotePad
+
+All notes, scripts, and preferences are stored in the home directory called 
+`~/.scriptpad/`. The notes are in the file `.notesjson`. All user defined
+scripts are kept in the file `.scriptsjson`. All user defined regular expressions
+are stored in the `.regexpjson` file. The preferences are in the `preferences.json`
+file while all the styles are in the `styles` directory. The preferences for the
+Bulliten Board program are in the file `bullitenBoard.json`. The `templates.json` 
+file contains all of the user defined templates. The `dialogs` directory contains 
+the user defined dialogs.
+

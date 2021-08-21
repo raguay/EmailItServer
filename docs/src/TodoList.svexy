@@ -1,0 +1,11 @@
+# Todo List
+
+![Todo List](http://localhost:9978/imgs/TodoList.png)
+
+The todo list is currently populated from your **[NotePlan](www.noteplanapp.com)**
+todo for the current day and any **[TaskPaper](https://www.taskpaper.com/)** formated files you add to it in 
+the preferences. You can add new todos by typing in the input box on top
+and press enter. You can mark a todo as done by clicking on the empty box. You
+can remove a todo from the display by clicking the `x` to the right of the todo
+item. Deleting the item doesn't actually delete it, but marks it as done and
+removes it from being displayed.

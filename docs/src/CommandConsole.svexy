@@ -1,0 +1,15 @@
+# Command Console
+
+From the main menu, you can open the Command Console.
+
+![The Command Console](http://localhost:9978/imgs/CommandConsole.png)
+
+This console gives nine different consoles to run scripts on files. It also 
+gives access to the [NodeRed](/#/NodeRed) by the right most red button.
+
+When this is functional, it will give the user the ability to have nine 
+terminals to different locations and able to run the scripts in ScriptPad on 
+any file. It will also have a plugin API system for adding new commands. Eventually, 
+new commands and scripts will be downloadable from GitHub.
+
+

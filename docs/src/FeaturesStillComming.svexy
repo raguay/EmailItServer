@@ -1,0 +1,20 @@
+# Features Still Coming
+
+Since I use this application everyday, I'm constantly thinking of new things I would like to add. If you have any new ideas, just let me know and I'll see what I can do.
+
+Currently, these are things that I'm either working on or plan to do:
+
+- Script launching webpage for using tablets/phones as a launch control center.
+- Command line console with similar features to Xiki.
+   - A way to run scripts on files.
+   - Tracks the disk location.
+   - Make it similar to what Xiki could have been.	 - Use [xterm: Console terminal in the browser](https://xtermjs.org/)
+- Running a script from inside of a script isn't working.
+- Add the ability for running external scripts.
+- Add scripts from GitHub that are marked for Scriptpad.
+- Create a library to use for controling other windows. 
+- Get it working on Linux and Windows.
+- Create modules for:
+  - the BitBar and Infinity Desktop work-a-like.
+  - An icon on the desktop side that expands to a directory view.
+

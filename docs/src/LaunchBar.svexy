@@ -1,0 +1,18 @@
+# LaunchBar Actions
+
+Once you install the LaunchBar ScriptPad action, you will be able to interact with
+ScriptPad through LaunchBar. Most notably, you'll be able to action scripts and templates
+right from LaunchBar.
+
+| | |
+| --- | --------- |
+| ScriptPad - Run Script | This will accept text on the command line. When the user presses `<enter>` on the commmand line, they will be prompted for the script to run on it. The user can type part of the name to narrow down the list of possible scripts. When a script is selected, the script is ran with the text given and te results are placed in the topmost application and in the clipboard. |
+| ScriptPad - Run Template | This will accept text on the command line. When the user presses `<enter>` on the commmand line, they will be prompted for the template to run. The user can type part of the name to narrow down the list of possible templates. When a template is selected, the template is ran with the text given and te results are placed in the topmost application and in the clipboard. |
+| ScriptPad - Set BulletinBoard | This will accept text on the command line. When the user presses `<enter>` on the command line, the text will be sent to the BulletinBoard module for displaying. If the text is `-`, then the message in the BulletinBoard will be errased and the board hiden. |
+| ScriptPad - Append BulletinBoard | This will accept text on the command line. When the user presses `<enter>` on the command line, the text will be appended to the text in the BulletinBoard. |
+| ScriptPad - Set Note | This willl accpet text on the command line. When the user presses `<enter>` on the command line, they will be asked for a note number and whether to overwrite or append the text. Depending on what the user selects will be done to the note. |
+| ScriptPad - Paste Note | This will ask for which note. The note will then be pasted into the topmost application and in the clipboard. |
+| ScriptPad - Dialog | This will ask for which dialog to display. You can type to narrow down the list. It will then ask for a list of parameters surrounded in quotation marks. That will be passed to the dialog program to display the requested dialog. The result are returned and put into the clipboard. |
+
+This workflow is expanded as the ScriptPad program gets more features. 
+

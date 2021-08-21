@@ -1,0 +1,139 @@
+# Scripts
+
+The scripts section of ScriptPad comes in two areas: running scripts from the 
+menu and creating/editing the scripts in the script editor.
+
+![Scripts Menu](http://localhost:9978/imgs/ScriptsMenu.png)
+
+When you are in a note area, press `<ctrl>+m` to toggle the scripts menu as seen
+above. Your scripts are the brighter blue and the system scripts are the paler
+blue (assuming your still using the default theme). This menu will always show
+your scripts first.
+
+As you type in the scripts menu, the choices will narrow down according to what 
+you type. This is to help you navigate the large number of scripts. You can use
+the up and down arrow keys to move the highlight. Pressing `<enter>` will action
+the script.
+
+If you had text selected in the note, that text will be passed to the script.
+Otherwise, the whole note will be passed to the script. Whatever the script
+returns, will replace the text sent to it.
+
+## Script Editor
+
+![Script Editor](http://localhost:9978/imgs/ScriptEditor.png)
+
+By pressing `<ctrl>+e`, you can open the script editor window shown above.  The
+script editor is used to create/edit user script to use on the notepads using
+the `<ctrl>+m` script menu. These scripts can process the text given in the
+current notepad, add new information to the current notepad, or totally over
+write it. It's up to you what you want your script to do.
+
+The first input takes the name of the script. If you give a new script the same
+name as one that already exists, you will over write it. It will not let you name
+a user script the same as a system script.
+
+The check box after the script name tells NotePad to insert the returned
+information if checked. If not checked, it will replace the selected text or all
+the text in the notepad if no text was selected.
+
+The variable `SP.text` contains either all the text in the note if there wasn't
+a selection, or just the selected text. You read this variable to get the text to
+process and write into the variable what you want to replace either the selection
+or all the text in the notepad.
+
+There are some predefined libraries in variables for your scripts to use. You
+can make use of the following:
+
+|  |  |
+| -- | ---- |
+| SP.jQuery | [jQuery library](https://jquery.com) |
+| SP.mathjs | [Math.js library](http://mathjs.org/) |
+| SP.moment | [moment.js library](https://momentjs.com) |
+| SP.Handlebars | [Handlebars library](https://handlebarsjs.com/) |
+
+The are some predefined function available as well:
+
+|  |  |
+| -- | ---- |
+| SP.insertCharacters(`<num>`,`<char>`) | This function makes a string of `<num>` `<char>`. |
+| SP.returnNote(`<id>`) | This function returns the note with the `<id>`. |
+| SP.runScript(`<scrpt>`,`<text>`) | This function runs the `<scrpt>` as a string on the `<text>` text. |
+
+You can create script in one note and use a different note for the input. 
+For example, in a note, place the following code:
+
+```js
+
+try {
+  var lines = SP.text.split('\n');
+  SP.text = '';
+  for(var i = 0; i < lines.length ; i++) {
+      var match = lines[i].trim().match(/^\d+\. (.*)$/);
+    if (match != null)
+        SP.text += match[1] + '\n';
+  }
+} catch (e) {
+   SP.text += "\n\n" + e.toString()
+}
+
+```
+
+Then go to a different note and place several lines of text. Run the
+script `Bullet lines with Numbers`. Every line will have the proper number at
+the front of it. Now, run the script `Evaluate Note # as Script` with `#` the
+number of the note where you put the script. The numbers at the beginning will now be
+removed! You can use the script editor to save this script and use it from the
+script menu.
+
+### Predefined Math Scripts
+
+NotePad has scripts for processing math: the 'Basic Math' and 'Evaluate Page for
+Math' scripts. The 'Basic Math' script is for processing arbitrary pieces of math
+in a selection. The 'Evaluate Page for Math' script is for processing the entire
+note with a nice running result along the right. The 'Basic Math' script doesn't
+reset the state of the math library (ie: variable definitions and functions),
+but the 'Evaluate Page for Math' does each time invoked so as to not create
+multiple copies of function and variables.
+
+Copy the following note to a notepad:
+
+```md
+
+# Using the ‘Evaluate Page for Math’ script
+
+Your notes can have any text you need. But when a line starts with a ‘>’, t
+hat whole line is processed for math. The line is processed and the answer pushed
+to the right with a ‘|’ symbol.
+
+> 6 * 95
+> x=6*8-10
+> x
+
+Text in the middle doesn’t clear out the variable or function assignments before it.
+
+> f(x)=x^2-5*x+12
+> f(60)
+> f(x)
+
+The length of the note isn’t a concern either.
+
+> f(100)
+
+> bank=34675
+> check=5067
+> balance = bank - check
+
+> sin(45)
+
+The math package used doesn’t do conversions or symbols inside of the mat
+h expressions. The math library used is [mathjs 4.0](http://mathjs.org/).
+
+```
+
+Then press `<ctrl>-m` and select the 'Evaluate Page for Math' script. Each
+line with the '>' as the front character now has the results to the right.
+When you change the text lines and re-run the script, the math lines are all 
+updated. All other lines are not effected by the script. You can change any
+equation or variable and it's effects will trickle down the page.
+

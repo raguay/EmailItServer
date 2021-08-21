@@ -1,0 +1,24 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ScriptPad Logger',{
+      category: 'ScriptPad',
+      defaults: {
+        name: {value:""}
+      },
+      inputs: 1,
+      outputs: 0,
+      label: 'ScriptPad Logger',
+      paletteLabel: 'ScriptPad Logger'
+    });
+</script>
+
+<script type="text/html" data-template-name="ScriptPad Logger">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-tips"><b>Tip:</b> Logger for ScriptPad.</div>
+</script>
+
+<script type="text/html" data-help-name="ScriptPad Logger">
+   <p>This is for logging information into ScriptPad.</p>
+</script>

@@ -1,0 +1,24 @@
+# Keyboard Maestro
+
+When you install the Keyboard Maestro macros, you will have macros to save, append, and
+get text from each of the notes. There is also two keyboard expander macros for
+pasting from a note and pasting a template into the current document.
+
+By copying text to the clipboard and then pressing `<ctrl><shift>;`, a menu will 
+appear for which note to use. Just press a number key or select
+one of the entries with the mouse. The clipboard text will then be added to the
+bottom of that note.
+
+By copying text to the clipboard and then pressing `<ctrl><shift>'`, a menu will 
+appear for which note to use. Just press a number key or select
+one of the entries with the mouse. The clipboard text will then overwrite the
+text of that note.
+
+By typing `;/`, a template name, and `/tp`, then the named template will be pasted 
+into the application. For example, by typing `;/Today/tp` the template named `Today` 
+will be pasted into the application you are typing.
+
+By typing `;/`, a note number, and `/np`, then the corresponding note will be pasted 
+in it's place. For example, by typing `;/2/np` in a wordprocessor, the contents of 
+note #2 will be place in it's place.
+

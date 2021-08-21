@@ -1,0 +1,47 @@
+<script>
+	var numMods = 'two'
+	var numScripts = 32
+</script>
+
+# About ScriptPad
+
+**ScriptPad** is a program for keeping track of nine notes in your menubar,
+editing them with regular expressions, and executing scripts on the 
+highlighted text or the full note. It currently comes with { numScripts } 
+predefined scripts. You can create and save your own scripts and 
+regular expressions as well.
+
+You can also see your [NotePlan](https://noteplan.co/) todo list and any 
+[TaskPaper](https://www.taskpaper.com/) todo list in the Todo section 
+(the clipboard icon on the right). Not only can you view the todo lists,
+you can add to them, check items off the list, and delete them. Completed
+items are automatically moved to the bottom for easier viewing of the 
+active items.
+
+You can also use templates to populate a notepad, modify it, then copy 
+paste it to other programs. You can define your own templates and make
+use of various macros. You can even write your own macros to the template
+system.
+
+By clicking on the hamburger menu to the lower left, you can see the
+main menu. The main menu allows you to open each of the sections of
+ScriptPad. It allso gives access to the help section you are reading now.
+There are also several launchers to install various helper extensions 
+for [Alfred](https://www.alfredapp.com/),
+[LaunchBar](https://obdev.at/products/launchbar/index.html), 
+[PopClip](https://pilotmoon.com/popclip/), [Dropzone 3](https://aptonic.com/),
+and [Keyboard Maestro](https://www.keyboardmaestro.com/main/) to automate
+working with **ScriptPad**. These scripts allow you to run any functionality
+of ScriptPad in other applications. For instance, you can highlight some 
+text and apply a script to it. Or, you can populate any text processor
+from a template that you have designed.
+
+ScriptPad also has a module system where you can run modules that have
+been created or your own designs. There are currently { numMods } modules with
+many more to come.
+
+I'm also working on giving ScriptPad the ability to run external scripts
+in it's own environment, a command console to run scripts on files, and
+many more ideals. If you have any suggestions, please let me know.
+
+Thank you for using this product.

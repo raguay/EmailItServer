@@ -1,0 +1,20 @@
+# Dropzone Action
+
+When you install the Dropzone actions, you can put text into a ScriptPad note or 
+run scripts on files or text dropped on the action. 
+
+![Script Pad Action Configuration](http://localhost:9978/imgs/DropzoneScriptPadAction.jpg)
+
+The `Script Pad` action will allow you to set it up by clicking on it. When you 
+click on it, it gives you the option to which note to save text to (default is note 
+#3) and whether to append it or overwrite it (the default is append). If you 
+drop text files or copied text to the action, it will be applied to the note 
+setup in the configuration when you click on it.
+
+![Run Script Action Configuration](http://localhost:9978/imgs/DropzoneRunScript.jpg)
+
+The `Run Script` action allows you to pick a script to apply to dropped text or 
+files. When you click on the action, it will show the above dialog asking
+for the script to use. If you drop text, the script is ran on the text and 
+copied back to the clipboard. If you drop a file, the file is changed according 
+to the script.

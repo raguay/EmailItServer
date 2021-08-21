@@ -1,0 +1,13 @@
+# PopClip Extension
+
+When you install the PopClip extension, it will allow you to select text and 
+overwrite or append it to a note. By editing the configuration for the extension, 
+you can change which note and what type of operation to perform.
+
+![PopClip Extension Configuration](http://localhost:9978/imgs/PopclipConfig.jpg)
+
+When you edit the configuration in PopClip, you will see the above dialog. Here, 
+simply put in the note number and operation type (overwrite or append). When you 
+select text and select the extension in PopClip, that action will be performed.
+
+

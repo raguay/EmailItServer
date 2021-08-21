@@ -1,0 +1,21 @@
+{
+  "name": "spscripts",
+  "version": "1.0.0",
+  "description": "Runs the given ScriptPad script on the input.",
+  "main": "spscripts.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node-red",
+    "node",
+    "scriptpad"
+  ],
+  "node-red": {
+    "nodes": {
+      "spscripts": "spscripts.js"
+    }
+  },
+  "author": "Richard Guay",
+  "license": "MIT"
+}

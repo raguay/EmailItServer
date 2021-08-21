@@ -1,0 +1,103 @@
+# queryUser Program
+
+This program is used to enteract with the BulletinBoard module. You use the
+`queryUser` command line with the following parameters:
+
+```zsh
+queryUser <dialog> <data1>.....<datan>
+```
+
+Where dialog is the name of the dialog to be displayed. The data1...datan are quoted 
+data fields used to populate the `{{data1}}` to `{{datan}}` template macros.
+
+To get a json list of all dialogs defined, both system dialogs and user defined dialogs, 
+just run this command:
+
+```zsh
+queryUser list
+```
+
+You will need to put the queryUser command line program on your path to be able to
+use it. It's locations are:
+
+| OS | Directory Structure |
+| --- | -------- |
+| macOS | `/Application/ScriptPad/contents/Resources/bin` |
+| Linux | coming soon |
+| Windows | coming soon |
+
+### Creating Dialogs
+
+The dialogs used are easy to create. In the `~/.scriptpad/dialogs` directory, create
+a file with the name of your dialog with an extension of `.json`. To create a dialog
+called question, you would create the file `querstion.json`.
+
+The structure for the file is:
+
+```json
+{
+  "html": "", 
+  "width": 200, 
+  "height": 80, 
+  "x": 400, 
+  "y": 200
+}
+```
+
+The `html` element will be the html needed to create the dialog and action the
+buttons in the dialog. The `width` and `height` items define the minimum width
+and height of the dialog. The `x` and `y` items define the location of the upper
+left corner of the dialog.
+
+The dialog will be displayed below the message field, if there is a message.
+
+For example, this is the file for the `question.json` dialog:
+
+```json
+{
+  "html": "<label>{{data1}}</label>
+  <input id='name' type='text' value='{{data2}}' autofocus ></input>
+  <button type='button' onclick='globalThis.sendBack()'>Okay</button>
+  <style>
+    button {
+      margin: 10px auto 10px auto;
+      background-color: gray;
+    }
+
+    #dialog {
+      width: 400px;
+      height: 80px;
+      align-content: center;
+      align-items: center;
+      text-align: center;
+    }
+  </style>
+  <script>
+    globalThis.sendBack = function() {
+      globalThis.BBData.dialogStore.dialogResult = document.getElementById('name').value; 
+      globalThis.BBData.dialogStore.callBack();
+    }
+  </script>", 
+  "width": 400, 
+  "height": 80, 
+  "x": 400, 
+  "y": 200
+}
+```
+
+Before processing each dialog file, the carrage returns are removed. Therefore, you 
+can define the html on multiple lines. This helps to create dialogs that are easy
+to read.
+
+The `#dialog` is the HTML element id for the div element that the dialog HTML is 
+placed. Therefore, you can customize the element by referring to `#dialog`.
+
+To send information back, you just fill the `globalThis.sendback` variable with a
+function that will get the information in the dialog, store it in the 
+`globalThis.BBData.dialogStore.dialogResult` variable. You then call the 
+`globalThis.BBData.dialogStore.callBack()` function to send the information back
+to the queryUser program. You setup the button to call the `globalThis.sendback()` 
+function on click event.
+
+This program can be called in scripts or from ScriptPad itself in order to get information
+from the user. 

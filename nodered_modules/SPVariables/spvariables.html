@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    RED.nodes.registerType('ScriptPad Variables',{
+      category: 'ScriptPad',
+      defaults: {
+        name: {value:""},
+        variable: {value: ""}
+      },
+      inputs: 1,
+      outputs: 1,
+      label: name ? name : 'ScriptPad Variables',
+      paletteLabel: 'ScriptPad Variables',
+
+    });
+</script>
+
+<script type="text/html" data-template-name="ScriptPad Variables">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-varaible"><i class="fa fa-tag"></i> Variable</label>
+        <input type="text" id="node-input-variable" placeholder="Variable">
+    </div>
+    <div class="form-tips"><b>Tip:</b> Variables for ScriptPad.</div>
+</script>
+
+<script type="text/html" data-help-name="ScriptPad Variables">
+   <p>This is for variable storage into ScriptPad.</p>
+</script>

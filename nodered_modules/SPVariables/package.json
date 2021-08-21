@@ -1,0 +1,21 @@
+{
+  "name": "spvariables",
+  "version": "1.0.0",
+  "description": "Stores information into variable inside of ScriptPad.",
+  "main": "spvariables.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node-red",
+    "node",
+    "scriptpad"
+  ],
+  "node-red": {
+    "nodes": {
+      "spvariables": "spvariables.js"
+    }
+  },
+  "author": "Richard Guay",
+  "license": "MIT"
+}

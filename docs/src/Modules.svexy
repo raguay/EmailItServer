@@ -1,0 +1,71 @@
+# Modules
+
+The ScriptPad program has the ability to launch modules. There are 
+both built-in modules and user defined modules.
+
+The built-in modules are a part of the **ScripPad** program. I'll be
+adding new ones in the future, so keep checking for updates.
+Currently, the builtin-modules are:
+
+- BulletinBoard
+- Remote Control
+
+### BulletinBoard
+
+This module launches a window with a tcp server. It starts off invisible.
+You can cause the window to appear and display text you send to it over
+tcp. For example, in Ruby, run this script:
+
+```ruby
+require 'net/http'
+require 'json'
+
+def uri_encode(str)
+  str.gsub(URI::UNSAFE) do |match|
+    match.each_byte.map { |c| sprintf('%%%02X', c.ord) }.join
+  end
+end
+if ARGV[0] == '-' then
+  message = ''
+else
+  message = uri_encode(ARGV[0])
+end
+
+uri = URI("http://localhost:9697/api/message/#{message}")
+http = Net::HTTP.new(uri.host, uri.port)
+req = Net::HTTP::Get.new(uri.path, 'Content-Type' => 'application/json')
+req.body = {msg: "#{message}"}.to_json
+res = http.request(req)
+puts "response #{res.body}"
+```
+
+This script will send the text on the command line to the BulletinBoard module 
+and will be displayed above other windows. It's default location is the upper 
+left corner. To clear the message and have the window close, send '-' as the
+text. By changing the address to send the text from:
+
+```ruby
+uri = URI("http://localhost:9697/api/message/#{message}")
+```
+
+to
+
+```ruby
+uri = URI("http://localhost:9697/api/message/append/#{message}")
+```
+
+It will append to the already existing text. I use this functionality the most for
+displaying contents of a file that gets changed by automated processing.
+
+The BulletinBoard also allows you to create and display dialogs that will return
+information to the calling program. The `queryUser` command line program will 
+show a dialog and return it's results when the user finishes with it. Using and 
+making more dialogs is covered in the `queryUser Program` help section.
+
+### Remote Control
+
+The Remote Control module allows the user to load a page on any other computer on 
+same subnet. This web page will display buttons that will execute scripts from 
+ScriptPad. You can control the buttons and assign any script you want to use. This 
+module is still under development.
+

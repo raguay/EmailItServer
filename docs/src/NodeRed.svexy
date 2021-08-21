@@ -1,0 +1,37 @@
+# NodeRed
+
+The right most red button on the Command Console is for opening the [NodeRed](https://nodered.org/) 
+console.
+
+![NodeRed Console](http://localhost:9978/imgs/NodeRed.png)
+
+The [NodeRed](https://nodered.org/) console gives 
+access to the NodeRed scripting engine. With it, you can setup automated 
+processes to access things on the Internet, automate home electronics, or about 
+anything that you can imagine. The ScriptPad runs a NodeRed server in the background 
+all the time. I currently have around 20 flows running on it and I see no issues 
+with it taking too much processor attention. It isn't a resource hog at all!
+
+There are currently three custom nodes for ScriptPad in Node-Red when launched 
+in this manner. The new nodes are:
+
+| Node Name | Description |
+| --- | -------- |
+| spscripts | This node allows you to specify any script in ScriptPad. The node will take what comes in the `msg.payload`, run the script on it, and return a new `msg.payload` with the results of the script. |
+| spvariables | This node will take what comes into the node from `msg.payload` and save it into the variable named in the node. ScriptPad makes the variable available to scripts and by a REST API. If a client is listening to the websocket of the variable name, they will get the message of it's change. A client can also connect to the websocket name `variablechange` to get a message on any variable change. |
+| splogger | This node allows the user to take any `msg.payload` that comes to it and display it in the Node-Red terminal in ScriptPad. This is great for debugging. |
+
+At the bottom of the Node-Red console are two buttons: Edit Flows and Stop. The `Stop` 
+button will stop the Node-Red server and the button will change to `Start`. To edit 
+your flows, press the `Edit Flow` button.
+
+![Edit Flows Window](http://localhost:9978/imgs/FlowEditor.png)
+
+This is where you can create and edit your Node-Red flows. Please refer to the 
+[Node-Red website](https://nodered.org/) for more information.
+
+If you have configured the Node-Red dashboard and turned it on in the preferences, 
+then you will have a `Dashboard` button as well. When you press the `Dashboard` 
+button, it will open the dashboard in a separate window. Please read and follow the 
+Node-Red documentation on how to use the Node-Red dashboard.
+

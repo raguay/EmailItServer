@@ -1,0 +1,38 @@
+# Main Window
+
+![The Main Window](http://localhost:9978/imgs/MainWindow.jpg)
+
+When you run the ScriptPad program, you will see the above picture. 
+ScriptPad has nine circles at the bottom. Each one is a different notepad to use. 
+The notepad currently in use has a larger circle than the ones that are inactive.
+In the above picture, the third notepad is currently active. You can switch
+notepads by clicking on the circles or by the keyboard shortcut `<ctrl> 1` for
+the first notepad, `<ctrl> 2` for the second, and so on.
+
+The hamburger menu on the far left opens the main menu. The clipboard icon on the
+far right opens the Todo List.
+
+Each notepad can be edited with all edits saved to your hard drive in a special
+location. The information is in a plaintext format. Therefore, it is recommended
+to not put any sensitive data into it.
+
+By pressing `<ctrl> m`, you will open the scripts menu. This gives a list of
+built-in and user defined scripts to execute on the text in the current notepad.
+If you have some text highlighted, just that text will be sent to the script.
+If nothing is highlighted, than the whole note will be sent to the script. 
+
+You can access the script editor by pressing `<ctrl> e`. The script editor allows
+you to create and edit your own scripts.
+
+By pressing `<ctrl> r`, you will open the regular expressions editor. With this
+editor, you can create, save, and edit the current notepad by using a regular
+expression.
+
+By pressing `<ctrl> p` you will be given a list of templates to insert into the 
+note and the current cursor location. You can edit/create/delete templates from
+the template editor using either the item in the main menu or by pressing 
+`<ctrl> t`.
+
+By pressing `<ctrl> o` you will open the command console. This part is still
+under construction.
+

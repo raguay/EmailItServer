@@ -1,0 +1,80 @@
+# Templater
+
+ScriptPad comes with a full template system built with Handlebars. It is accessed in 
+the notes with `<ctrl>+p`. The menu will prompt for which template to insert into
+the note. User defined templates are in a lighter blue than the system templates 
+(assuming you are using the default theme).
+
+![Template Selection Menu](http://localhost:9978/imgs/TemplaterMenu.jpg)
+
+When you start typing, the menu will shorten the list based on the closest match
+to what you type. When you select a template, it is expanded in the note at the
+location of the cursor. This is added to the note and will not destroy text
+already there.
+
+Pressing `<ctrl>+p` again without selecting a template will will close the
+template menu.
+
+## Template Editor
+
+![Template Editor](http://localhost:9978/imgs/TemplateEditor.jpg)
+
+Pressing `<ctrl>+t` will open the template editor shown above. You have to give it
+a name, description, and the actual template. 
+
+## Template Syntax
+
+The templating engine used is call [Handlebars](https://handlebarsjs.com/). It is 
+used in the templates and in the dialog boxes for the BulletinBoard. Handlebars 
+allows you to have a text file with anything in it along with some macros. Some 
+macros need auguments and some do not. The macros are expanded and placed into the 
+text. Macros with arguments are called helpers. Along with 
+the standard Handlebar helpers, several others have been added as well. The 
+following is an explanation of the additional helpers:
+
+| | |
+|--|----|
+| `{{save <name> <text>}}` | This command creates a helper named `<name>` with the expanding text of `<text>`. It also places the given `<text>` at the point of definition. This allows you to create text snippets on the fly inside the template. Very handy. |
+| `{{clipboard}}` | This helper command places the current clipboard contents at the point in the template. |
+| `{{date <format>}}` | This will format the current date and time as per the format string given. See the help document that is loaded upon initialization. |
+| `{{cdate <date/time> <format>}}` | This takes the date/time string and formats it according to the format given. See the help document that is loaded upon initialization. |
+| `{{env <name>}}` | This will place the environment variable that matches `<name>` at that location |
+| `{{last <weeks> <dow> <format>}}` | This will print the date `<weeks>` ago in the `<format>` format for the `<dow>` day of week. |
+| `{{next <weeks> <dow> <format>}}` | This will print the date `<weeks>` in the future using the `<format>` format for the `<dow>` day of week. |
+| `{{userfillin <question> <default>}}` | This will prompt the user with `<question>` and put the `<default>` as a quick answer. The response will be put into the template. |
+| `{{copyclip <clipname>}}` | This will put the Alfred Copy Clip workflow's `<clipname>` into the template. |
+
+The following data expansions are defined as well:
+
+`{{cDateMDY}}` gives the current date in Month Day, 4-digit year format
+
+`{{cDateDMY}}` gives the current date in Day Month 4-digit Year format
+
+`{{cDateDOWDMY}}` gives the current date in Day of Week, Day Month 4-digit year format
+
+`{{cDateDOWMDY}}` gives the current date in Day of Week Month Day, 4-digit year format
+
+`{{cDay}}` gives the current date in Day format
+
+`{{cMonth}}` gives the current date in Month format
+
+`{{cYear}}` gives the current date in 4-digit year format
+
+`{{cMonthShort}}` gives the current date in Short Month name format
+
+`{{cYearShort}}` gives the current date in 2-digit year format
+
+`{{cDOW}}` gives the current date in Day of Week format
+
+`{{cMDthYShort}}` gives the current date in Month day 2-digit year format
+
+`{{cMDthY}}` gives the current date in Month Day 4-digit year format
+
+`{{cHMSampm}}` gives the current date in h:mm:ss a format
+
+`{{cHMampm}}` gives the current date in h:mm a format
+
+`{{cHMS24}}` gives the current date in H:mm:ss 24 hour format
+
+`{{cHM24}}` gives the current date in H:mm 24 hour format
+

@@ -1,0 +1,34 @@
+# Preferences
+
+![Preferences - General](http://localhost:9978/imgs/Preferences-General.png)
+
+When you press the `Preferences` link in the main menu, this dialog will open. 
+On the `General` tab, you can change the code wrap and editor keyboard mappings
+for the different editors.
+
+The bottom of all of the Preferences screens show a `Save Styles & Preferences`
+and a `Quit Preferences` button. The first will save the preferences to the hard
+drive while the other will leave the preferences dialog all together.
+
+![Preferences - Theme](http://localhost:9978/imgs/Preferences-Theme.png)
+
+When you click the `Theme` tab, you will get this screen. Here, you can change
+the theme of **ScriptPad** or create your own. Setting the `Name of theme` to
+`New` will allow you to add a new name for a theme. The changes will be saved
+into that theme name.
+
+![Color Picker](http://localhost:9978/imgs/Preferences-ColorPicker.png)
+
+Clicking on a colored circle will show a color picker dialog to pick a new color.
+Select a color and press the `Select` button to set the new color. The `Quit`
+button will exit the color picker without setting a new color. You can also enter
+an RGB hex value for the color in the input dialog.
+
+![Preferences - Todo](http://localhost:9978/imgs/Preferences-Todo.png)
+
+When you click the `Todo` tab, you will be able to enable/disable the **NotePlan**
+todo list and the **TaskPaper** todo lists. **NotePlan** will just show the current 
+days todo items, while the **TaskPaper** todo list can be as many files as you want. 
+You specify the location of the file and the name you want to associate with it.
+
+

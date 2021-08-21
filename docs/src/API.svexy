@@ -1,0 +1,32 @@
+# Web API
+
+ScriptPad has a large web based API for interfacing with other applications, 
+command line tools, or whatever else would help. The base address for the 
+APIs is `http://localhost:9978/api`. Every endpoint in this table builds 
+on this base.
+
+| Endpoint | Description |
+| --- | ------ |
+| /web/launch | This is a PUT method access with the body containing a JSON structure with one element 'url'. That should contain the URL to open a browser window. This is using the internall browser. |
+| /note/<number>/(a or w) | A PUT request will assert the note value while the GET request will return the note. Both use a JSON structure with the element `note`. The `a` on the end will append to the note while a `w` will over write. |
+| /script/list | A GET request will return a list of scripts that can be ran on ScriptPad. |
+| /script/run | A PUT request requires a JSON body with a `script` element and a `text` element. The `script` script will be ran with the `text` and returned in a JSON structure with a `text` element. |
+| /template/list | A GET request will return the name of all the templates in ScriptPad. |
+| /template/run | A PUT request requires a JSON body with a 'template' element and a 'text' element. The `template` will be ran with the `text` as an input. The results are return in a JSON structure with the result in the 'text' element. |
+| /getip | A GET request will return the IP of the computer that is running ScriptPad. |
+| /nodered/var/<name> | A GET request will return the current value of the Node-Red variable. A PUT request will set the Node-Red variable to the `text` element of the JSON structure in the body. |
+
+If you create a script on your path with this content:
+
+```sh
+#!/bin/sh
+
+/usr/local/bin/wget --body-data="{ \"url\": \"$1\" }" --header='Content-Type:application/json' 'http://localhost:9978/api/web/launch' --method=PUT -O /dev/null 3>/dev/null 2>/dev/null 1>/dev/null
+```
+
+it will open the URL given to it in the browser window of ScriptPad. You will have to have `wget` installed on your system. 
+I've named it `openURL` and use it to open sites on the command line with `openURL "http://customct.com"`. That will open my 
+web site.
+
+All the other endpoints are used to make the plugins for Alfred, Keyboard Maestro, Dropzone, PopClip, and Launchpad.
+

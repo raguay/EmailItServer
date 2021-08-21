@@ -1,0 +1,57 @@
+<script type="text/javascript">
+    RED.nodes.registerType('spscripts',{
+      category: 'ScriptPad',
+      defaults: {
+        name: {value:""},
+        scriptName: {value: ""}
+      },
+      inputs: 1,
+      outputs: 1,
+      label: function() { return this.scriptName !== "" ? this.scriptName : "ScriptPad Scripts";},
+      paletteLabel: 'ScriptPad Scripts',
+      oneditprepare: function() {
+        fetch('http://localhost:9978/api/scripts/list')
+        .then((response) => {
+          return response.json();
+        }).then((scripts) => {
+          var inputScript = document.getElementById('node-input-scriptName');
+          var selectionHTML = '<select name="script" id="script-select">';
+          selectionHTML += '<option value="">--Please choose an script--</option>';
+          for (var i = 0; i < scripts.length; i++) {
+            if(scripts[i] === inputScript.value) {
+              selectionHTML += '<option value="' + scripts[i] + '" selected=true >' + scripts[i] + '</option>';
+            } else {
+              selectionHTML += '<option value="' + scripts[i] + '">' + scripts[i] + '</option>';
+            }
+          };
+          selectionHTML += '</select>';
+          inputScript.style.display = "none";
+          inputScript.insertAdjacentHTML('afterEnd',selectionHTML);
+        }).catch((error) => {
+          console.error('Error:', error);
+        });
+      },
+      oneditsave: function() {
+        var selectScript = document.getElementById('script-select');
+        var inputScript = document.getElementById('node-input-scriptName');
+        inputScript.style.display = "inline";
+        inputScript.value = selectScript.options[selectScript.selectedIndex].value;
+        this.name = inputScript.value;
+        this.scriptName = inputScript.value;
+      }
+    });
+</script>
+
+<script type="text/html" data-template-name="spscripts">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-scriptName"><i class="fa fa-tag"></i> Script Name</label>
+        <input type="text" id="node-input-scriptName" placeholder="Script Name">
+    </div>
+    <div class="form-tips"><b>Tip:</b> Scripts for ScriptPad.</div>
+</script>
+
+<script type="text/html" data-help-name="spscripts">
+   <p>This is for running ScriptPad scripts on the input.</p>
+</script>
