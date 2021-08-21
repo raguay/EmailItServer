@@ -1,6 +1,6 @@
-/node_modules/
+node_modules
 *.log
 .DS_Store
 math.diff.js
-/docs/node_modules
 *-lock.*
+dist
