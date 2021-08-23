@@ -6,9 +6,12 @@
 
 The backend server for EmailIt with a Node-Red server builtin. It is also used by ScriptBar and BullitenBoard (in the works). This program requires [Node](https://nodejs.org/en/) to be installed on your computer.
 
-# Disclaimer
+## Disclaimer
 
-This program 
+This program is an Express server for supplying functions to the EmailIt program and Alfred, LaunchBar, Keyboard Maestro, and Popclip programs. Therefore, it has any hazard that any web server will have. Therefore, please run on a trusted network only. I'm trying to make it as secure as possible. Any help would be appriciated.
+
+## Running the server
+
 Only downloaded, you need to install the libraries by:
 
 ```sh

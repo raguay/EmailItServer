@@ -2,7 +2,7 @@ var fs = require('fs');
 var process = require('process');
 const nodemailer = require("nodemailer");
 
-const EMAILITPROG = '../src-tauri/target/debug/bundle/macos/EmailIt.app/Contents/MacOS/EmailIt';
+const EMAILITPROG = '/Applications/EmailIt.app/Contents/MacOS/EmailIt';
 
 module.exports = (router, express, ScriptPad) => {
   //
