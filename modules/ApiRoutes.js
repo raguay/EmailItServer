@@ -283,6 +283,9 @@ module.exports = (router, express, ScriptPad) => {
   router.route('/emailit/addEmail').put((req, res, next) => {
     ScriptPad.saveNewEmail(req.body.name, req.body.email);
     res.send({ text: 'okay'});
+  }).delete((req, res, error) => {
+    ScriptPad.deleteNewEmail(req.body.email);
+    res.send({ text: 'okay'});
   });
   router.route('/emailit/emails').get((req, res, next) => {
     res.send({

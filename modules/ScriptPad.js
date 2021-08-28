@@ -1184,6 +1184,16 @@ module.exports = {
     });
     fs.writeFileSync(this.EMAILADDRESSFILELOC, JSON.stringify(emails));
   },
+  deleteNewEmail: function(email) {
+    var emails;
+    if(fs.existsSync(this.EMAILADDRESSFILELOC)) {
+      emails = JSON.parse(fs.readFileSync(this.EMAILADDRESSFILELOC));
+      emails = emails.filter(item => item.email !== email);
+    } else {
+      emails = [];
+    }
+    fs.writeFileSync(this.EMAILADDRESSFILELOC, JSON.stringify(emails));
+  },
   getEmails: function() {
     var emails;
     if(fs.existsSync(this.EMAILADDRESSFILELOC)) {
