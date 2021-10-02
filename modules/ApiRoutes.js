@@ -360,4 +360,36 @@ module.exports = (router, express, ScriptPad) => {
       data: ScriptPad.messages
     });
   });
+
+  //
+  // Routes for Themes.
+  //
+  router.route('/theme'). get((req, res, next) => {
+    res.send({
+      theme: ScriptPad.getCurrentTheme()
+    })
+  });
+
+  router.route('/theme/list').get((req, res, next) => {
+    //
+    // This route will get a list of themes.
+    //
+    res.send({
+      themes: ScriptPad.getThemes()
+    });
+  });
+
+  router.route('/theme/:name').get((req, res, next) => {
+    //
+    // This is used to retrieve a particular theme.
+    //
+  }).put((req, res, next) => {
+    //
+    // This route will save/create a theme.
+    //
+  }).delete((req, res, next) => {
+    //
+    // This route is for deleting a theme.
+    //
+  });
 }

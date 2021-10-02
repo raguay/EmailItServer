@@ -5,7 +5,8 @@
   "main": "server.js",
   "bin": "server.js",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "caxa -i . -o EmailItServer -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/server.js'"
   },
   "keywords": [
     "smpt",
@@ -14,6 +15,7 @@
   "author": "Richard Guay",
   "license": "MIT",
   "dependencies": {
+    "caxa": "^2.1.0",
     "clipboardy": "^2.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -28,9 +30,21 @@
     "socketio": "^1.0.0"
   },
   "pkg": {
-    "scripts": ["modules/*.js", "node_modules/**/**/**/*.js"],
-    "assets": ["ScriptServer/**/*","WorkflowScripts/**/*", "dialogs/*", "docs/**/*", "imgs/**/*", "nodered_modules/**/*"],
-    "targets": [ "node16-macos-arm64" ],
+    "scripts": [
+      "modules/*.js",
+      "node_modules/**/**/**/*.js"
+    ],
+    "assets": [
+      "ScriptServer/**/*",
+      "WorkflowScripts/**/*",
+      "dialogs/*",
+      "docs/**/*",
+      "imgs/**/*",
+      "nodered_modules/**/*"
+    ],
+    "targets": [
+      "node16-macos-arm64"
+    ],
     "outputPath": "dist"
   }
 }

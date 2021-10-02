@@ -4,3 +4,4 @@ node_modules
 math.diff.js
 *-lock.*
 dist
+/EmailItServer
