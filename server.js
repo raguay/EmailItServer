@@ -2,7 +2,6 @@ var express = require('express');
 var ApiRoutes = require('./modules/ApiRoutes.js');
 var PublicRoutes = require('./modules/PublicRoutes.js');
 var http = require('http');
-var socketio = require('socket.io');
 var ScriptPad = require('./modules/ScriptPad.js');
 var cors = require('cors');
 
@@ -19,13 +18,21 @@ ScriptPad.app = express()
 //
 // Create the router.
 //
-ScriptPad.app.use(cors());
 var apiRouter = express.Router()
 var pubServerRouter = express.Router()
 
 //
 // Setup the routes.
 //
+apiRouter.use(cors({
+  origin: '*'
+}));
+apiRouter.use(function(req, res, next) {
+  res.header("Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 ApiRoutes(apiRouter, express, ScriptPad);
 PublicRoutes(pubServerRouter, express);
 
@@ -38,22 +45,11 @@ ScriptPad.app.use('/', pubServerRouter)
 //
 // Create the server.
 //
-ScriptPad.httpServer = http.createServer(ScriptPad.app);
-
-//
-// Create the websocket connection.
-//
-ScriptPad.io = socketio(ScriptPad.httpServer);
-
-ScriptPad.io.on('connection',(client) => {
-  ScriptPad.logger('Client connected...');
-  ScriptPad.ioClients.push(client);
-});
-ScriptPad.io.on('disconnect', (client) => {
-  ScriptPad.logger('Client disconnected...');
-  ScriptPad.logger(client);
-  ScriptPad.ioClients = ScriptPad.ioClients.find(item => item !== client);
-});
+ScriptPad.httpServer = http.createServer(ScriptPad.app, {
+        log: false,
+        agent: false,
+        origins: '*'
+    });
 
 //
 // Initialize Node-Red

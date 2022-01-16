@@ -12,12 +12,6 @@ const fsex = require('fs-extra');
 const childProcess = require('child_process');
 const clipboardy = require('clipboardy');
 
-//
-// Add math library extensions.
-//
-//mathjs.import(require('mathjs-simple-integral'));
-//mathjs.import(require('../math.diff.js/math.diff.js'));
-
 module.exports = {
   //
   // ScriptPad variables below:
@@ -67,11 +61,6 @@ module.exports = {
   SYSTEMSCRIPTS: SystemScripts,
   SYSTEMTEMPLATES: SystemTemplates,
 
-  // 
-  // Variable for the Web Socket IO.
-  //
-  ioClients: [],
-
   //
   // All functions below:
   //
@@ -101,8 +90,8 @@ module.exports = {
     //
     // Keep it within the queue length.
     //
-    while(this.messages.length > 1000) {
-      this.messages.pop();
+    while(this.messages.length > 100) {
+      this.messages = this.messages.slice(1);
     }
 
     //
@@ -119,7 +108,6 @@ module.exports = {
     if(!fs.existsSync(this.CONFIGDIR)) {
       fs.mkdirSync(this.CONFIGDIR);
     }
-    this.ioClients = [];
     this.NOTESDIR = this.CONFIGDIR;
     this.NOTESFILELOC = this.CONFIGDIR + '/notes.json';
     this.SCRIPTSFILELOC = this.CONFIGDIR + '/scripts.json';

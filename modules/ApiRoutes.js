@@ -18,7 +18,7 @@ module.exports = (router, express, ScriptPad) => {
     var okay = true
     var requesterIP = req.ip.split('.')
     var localIP = req.connection.localAddress.split('.')
-    if ((requesterIP[0] === localIP[0]) && (requesterIP[1] === localIP[1]) && (requesterIP[2] === localIP[2]) && (requesterIP[0] === localIP[0])) {
+    if ((requesterIP[0] === localIP[0]) && (requesterIP[1] === localIP[1]) && (requesterIP[2] === localIP[2])) {
       //
       // Okay, the request is within our sub-domain. You can allow it.
       //
@@ -317,14 +317,9 @@ module.exports = (router, express, ScriptPad) => {
     res.send({ text: 'okay'});
   });
   
-  router.route('/emailit/send/:to').get((req, res, next) => {
-    if(ScriptPad.ioClients.length === 0) {
-      ScriptPad.commandLine("'" + EMAILITPROG + "' -m " + req.params.to);
-    } else {
-      ScriptPad.ioClients.forEach(el => {
-        el.emit('email', req.params.to);
-      });
-    }
+  router.route('/emailit/send/:to/:subject?/:body?').get((req, res, next) => {
+    console.log(req.params);
+    ScriptPad.commandLine("'" + EMAILITPROG + "' -m " + req.params.to);
     res.send({ text: 'okay' });
   });
 
