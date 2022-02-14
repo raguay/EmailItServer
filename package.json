@@ -15,7 +15,7 @@
   "author": "Richard Guay",
   "license": "MIT",
   "dependencies": {
-    "follow-redirects": ">=1.14.7",
+    "follow-redirects": ">=1.14.8",
     "caxa": ">=2.1.0",
     "clipboardy": "^2.3.0",
     "cors": ">=2.8.5",
