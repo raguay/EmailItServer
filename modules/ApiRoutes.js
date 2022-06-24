@@ -70,7 +70,24 @@ module.exports = (router, express, ScriptPad) => {
     res.json(ScriptPad.getEnvNames());
   })
 
-  router.route('/scripts/env/:env').get((req, res, next) => {
+  router.route('/scripts/env/Default').put((req, res, next) => {
+    var defEnv = {};
+    if (typeof req.body.envVar === 'undefined') {
+      defEnv = ScriptPad.createDefaultEnv();
+    } else {
+      defEnv = req.body;
+    }
+    ScriptPad.addEnv(defEnv);
+    res.json({
+      text: 'okay'
+    });
+  });
+
+  router.route('/scripts/env/:env', {
+    headers: {
+      "Content-type": "application/json",
+    }
+  }).get((req, res, next) => {
     res.json(ScriptPad.getEnv(req.params.env));
   }).put((req, res, next) => {
     ScriptPad.addEnv(req.body);
@@ -96,11 +113,11 @@ module.exports = (router, express, ScriptPad) => {
   router.route('/scripts/list').get((req, res, next) => {
     res.json({
       data: ScriptPad.getScripts().map(value => {
-        return { name: value.name, insert: value.insert}
+        return { name: value.name, insert: value.insert }
       }).concat(ScriptPad.getSystemScripts().map(value => {
-        return { name: value.name, insert: value.insert}
+        return { name: value.name, insert: value.insert }
       })).concat(ScriptPad.listExtScripts().map(value => {
-        return { name: value, insert: false}
+        return { name: value, insert: false }
       }))
     });
   })
@@ -147,31 +164,31 @@ module.exports = (router, express, ScriptPad) => {
   router.route('/script/run').put((req, res, next) => {
     var scriptArray = ScriptPad.getScripts();
     var script = null;
-    var scriptIndex = scriptArray.find((ele) => { return ele.name === req.body.script})
-    if(typeof scriptIndex !== 'undefined') {
+    var scriptIndex = scriptArray.find((ele) => { return ele.name === req.body.script })
+    if (typeof scriptIndex !== 'undefined') {
       script = scriptIndex.script;
       res.json({
         text: ScriptPad.runJavaScriptScripts(script, req.body.text)
       });
     } else {
       scriptIndex = ScriptPad.getExtScript(req.body.script);
-      if(typeof scriptIndex !== 'undefined') {
+      if (typeof scriptIndex !== 'undefined') {
         //
         // It's an external script.
         //
         res.json({
-          text: ScriptPad.runExtScript(scriptIndex,req.body)
-        }) 
+          text: ScriptPad.runExtScript(scriptIndex, req.body)
+        })
       } else {
         //
         // Find it in the built in scripts.
         //
         scriptArray = ScriptPad.getSystemScripts();
-        scriptIndex = scriptArray.find((ele) => { return ele.name === req.body.script})
-        if(typeof scriptIndex !== 'undefined') {
+        scriptIndex = scriptArray.find((ele) => { return ele.name === req.body.script })
+        if (typeof scriptIndex !== 'undefined') {
           script = scriptIndex.script;
         } else {
-          script = {script: "SP.text = 'Error: Not a Script.';"}
+          script = { script: "SP.text = 'Error: Not a Script.';" }
         }
         res.json({
           text: ScriptPad.runJavaScriptScripts(script, req.body.text)
@@ -185,9 +202,9 @@ module.exports = (router, express, ScriptPad) => {
   //
   router.route('/template/list').get((req, res, next) => {
     res.json({
-      templates: ScriptPad.listTemplates().filter(item => { 
+      templates: ScriptPad.listTemplates().filter(item => {
         var result = true;
-        if(item === 'Defaults') {
+        if (item === 'Defaults') {
           result = false;
         }
         return result;
@@ -197,16 +214,16 @@ module.exports = (router, express, ScriptPad) => {
 
   router.route('/template/user').get((req, res, next) => {
     res.json({
-      templates: ScriptPad.listUserTemplates().filter(item => { 
+      templates: ScriptPad.listUserTemplates().filter(item => {
         var result = true;
         return result;
       })
     });
   });
-  
+
   router.route('/template/run').put((req, res, next) => {
     var template = ScriptPad.getTemplateByName(req.body.template);
-    if(template === null) {
+    if (template === null) {
       res.json({
         text: 'Not Defined.'
       })
@@ -219,7 +236,7 @@ module.exports = (router, express, ScriptPad) => {
 
   router.route('/template/:template').get((req, res, next) => {
     var template = ScriptPad.getTemplateByName(req.params.template);
-    if(template === null) {
+    if (template === null) {
       res.json({
         text: 'Not Defined.'
       })
@@ -241,7 +258,7 @@ module.exports = (router, express, ScriptPad) => {
   });
 
   router.route('/nodered/var/:varname').put((req, res, next) => {
-    ScriptPad.SetRedVar(req.params.varname,req.body.text);
+    ScriptPad.SetRedVar(req.params.varname, req.body.text);
     res.json({
       text: 'okay'
     });
@@ -261,7 +278,7 @@ module.exports = (router, express, ScriptPad) => {
   });
 
   router.route('/scriptbar/config').get((req, res, next) => {
-    if(fs.existsSync(ScriptPad.SCRIPTBARPREFERENCES)) {
+    if (fs.existsSync(ScriptPad.SCRIPTBARPREFERENCES)) {
       res.json({
         config: JSON.parse(fs.readFileSync(ScriptPad.SCRIPTBARPREFERENCES).toString())
       });
@@ -282,10 +299,10 @@ module.exports = (router, express, ScriptPad) => {
   //
   router.route('/emailit/addEmail').put((req, res, next) => {
     ScriptPad.saveNewEmail(req.body.name, req.body.email);
-    res.send({ text: 'okay'});
+    res.send({ text: 'okay' });
   }).delete((req, res, error) => {
     ScriptPad.deleteNewEmail(req.body.email);
-    res.send({ text: 'okay'});
+    res.send({ text: 'okay' });
   });
   router.route('/emailit/emails').get((req, res, next) => {
     res.send({
@@ -314,11 +331,10 @@ module.exports = (router, express, ScriptPad) => {
     });
 
     ScriptPad.logger(`Message sent: ${info.messageId}`);
-    res.send({ text: 'okay'});
+    res.send({ text: 'okay' });
   });
-  
+
   router.route('/emailit/send/:to/:subject?/:body?').get((req, res, next) => {
-    console.log(req.params);
     ScriptPad.commandLine("'" + EMAILITPROG + "' -m " + req.params.to);
     res.send({ text: 'okay' });
   });
@@ -341,7 +357,7 @@ module.exports = (router, express, ScriptPad) => {
     ScriptPad.logger('Shutting down...');
     ScriptPad.SERVERON = false;
     res.send({ text: 'okay' });
-    ScriptPad.server.close(()=> {
+    ScriptPad.server.close(() => {
       ScriptPad.logger('Server shutdown.');
     });
     process.exit();
@@ -359,7 +375,7 @@ module.exports = (router, express, ScriptPad) => {
   //
   // Routes for Themes.
   //
-  router.route('/theme'). get((req, res, next) => {
+  router.route('/theme').get((req, res, next) => {
     res.send({
       theme: ScriptPad.getCurrentTheme()
     })
@@ -378,13 +394,21 @@ module.exports = (router, express, ScriptPad) => {
     //
     // This is used to retrieve a particular theme.
     //
+    res.send({
+      theme: ScriptPad.getTheme(req.params.name)
+    })
   }).put((req, res, next) => {
     //
     // This route will save/create a theme.
     //
+    req.body.name = req.params.name;
+    ScriptPad.saveTheme(req.params.name, req.body);
+    res.send('okay');
   }).delete((req, res, next) => {
     //
     // This route is for deleting a theme.
     //
+    ScriptPad.deleteTheme(req.params.name);
+    res.send('okay');
   });
 }

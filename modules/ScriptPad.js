@@ -53,6 +53,7 @@ module.exports = {
   EXTSCRIPTSFILELOC: '',
   EMAILACCOUNTSFILELOC: '',
   EMAILADDRESSFILELOC: '',
+  THEMELOC: '',
   SERVERON: true,
 
   //
@@ -64,17 +65,17 @@ module.exports = {
   //
   // All functions below:
   //
-  logger: function (msg) {
+  logger: function(msg) {
     //
     // Make sure the messages buffer is defined.
     //
-    if(typeof this.messages === 'undefined') this.messages = [];
+    if (typeof this.messages === 'undefined') this.messages = [];
 
     //
     // Format the time string and message.
     //
-    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'};
-    if(typeof msg.timestamp !== 'undefined') {
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    if (typeof msg.timestamp !== 'undefined') {
       const time = new Date(msg.timestamp).toLocaleTimeString('en-US', options);
       msg = `[${time}] ${msg.msg}`
     } else {
@@ -90,14 +91,14 @@ module.exports = {
     //
     // Keep it within the queue length.
     //
-    while(this.messages.length > 100) {
+    while (this.messages.length > 100) {
       this.messages = this.messages.slice(1);
     }
 
     //
     // If showLog is true, log it to the command line.
     //
-    if(this.showLog) {
+    if (this.showLog) {
       console.log(msg);
     }
   },
@@ -105,7 +106,7 @@ module.exports = {
     //
     // Make sure the config directory exists.
     //
-    if(!fs.existsSync(this.CONFIGDIR)) {
+    if (!fs.existsSync(this.CONFIGDIR)) {
       fs.mkdirSync(this.CONFIGDIR);
     }
     this.NOTESDIR = this.CONFIGDIR;
@@ -118,6 +119,7 @@ module.exports = {
     this.ENVIRONMENTVARIABLESFILELOC = this.CONFIGDIR + '/environments.json';
     this.EMAILACCOUNTSFILELOC = this.CONFIGDIR + '/emailaccounts.json';
     this.EMAILADDRESSFILELOC = this.CONFIGDIR + '/emails.json';
+    this.THEMELOC = this.CONFIGDIR + '/styles';
 
     this.setupHandlebarHelpers();
   },
@@ -167,10 +169,10 @@ module.exports = {
   },
 
   getSystemTemplates: function() {
-    return(this.SYSTEMTEMPLATES)
+    return (this.SYSTEMTEMPLATES)
   },
   getUserTemplates: function() {
-     if (this.TEMPLATES === null) {
+    if (this.TEMPLATES === null) {
       //
       // Read the scripts file.
       //
@@ -190,7 +192,7 @@ module.exports = {
     return (this.TEMPLATES)
   },
   saveUserTemplates: function(templates) {
-     if ((templates === null) || ((typeof templates) === 'undefined')) {
+    if ((templates === null) || ((typeof templates) === 'undefined')) {
       templates = []
     }
     this.TEMPLATES = templates
@@ -241,7 +243,7 @@ module.exports = {
         this.mathParser.clear()
         let lines = Note.match(/^.*((\\r\\n|\\n|\\r)|$)/gm)
         let numLines = lines.length
-        for (let i=0;i<lines.length;i++) {
+        for (let i = 0; i < lines.length; i++) {
           var line = lines[i];
           var lineResult = ''
           line = line.trim()
@@ -249,7 +251,7 @@ module.exports = {
             line = line.substr(2)
             var inx = line.indexOf('|')
             if (inx !== -1) {
-              line = line.substr(0, inx-1)
+              line = line.substr(0, inx - 1)
               line = line.trim()
             }
             lineResult = this.mathParser.evaluate(line)
@@ -257,7 +259,7 @@ module.exports = {
               lineResult = 'Definition'
             }
             var whiteSP = 32 - (line.length + 3);
-            if(whiteSP < 1) {
+            if (whiteSP < 1) {
               whiteSP = 1;
             }
             result += '> ' + line + this.insertCharacters(whiteSP, ' ') + ' | ' + lineResult
@@ -274,7 +276,7 @@ module.exports = {
       returnNote: function(id) {
         var result = '';
         id = id - 1;
-        if((id >= 0) && (id <= 9)) result = that.NOTES[id];
+        if ((id >= 0) && (id <= 9)) result = that.NOTES[id];
         return result;
       },
       insertCharacters: function(num, ichar) {
@@ -300,7 +302,7 @@ module.exports = {
     //
     // Make sure we have a string and not an array or object.
     //
-    if(typeof SP.text != 'string') {
+    if (typeof SP.text != 'string') {
       SP.text = SP.text.toString();
     }
     return (SP.text);
@@ -334,7 +336,7 @@ module.exports = {
   //                   noteid      The id of the note to get.
   //
   getNote: function(noteid) {
-    if((noteid >= 0)&&(noteid <=9)) {
+    if ((noteid >= 0) && (noteid <= 9)) {
       this.readNotesFile()
       return (this.NOTES[noteid])
     }
@@ -353,7 +355,7 @@ module.exports = {
     if ((body === null) || (typeof body === 'undefined')) {
       body = ""
     }
-    if((noteid >= 0)&&(noteid <=8)) {
+    if ((noteid >= 0) && (noteid <= 8)) {
       this.readNotesFile()
       this.NOTES[noteid] = body
       this.writeNotesFile()
@@ -439,7 +441,7 @@ module.exports = {
     this.showURL('http://localhost:9978/docs', 'helpWin', (win) => {
     })
   },
-  
+
   //
   // this function allows for the launching of an arbitrary website.
   // #TODO:
@@ -471,7 +473,7 @@ module.exports = {
     //
     // Close Node-Red
     //
-    if(this.REDSTARTED) {
+    if (this.REDSTARTED) {
       this.RED.stop();
     }
 
@@ -537,7 +539,7 @@ module.exports = {
       return that.getCopyClip(name);
     });
   },
-  getFeedback: function( Question, Default ) {
+  getFeedback: function(Question, Default) {
     return this.getAnswer(Question, Default);
   },
   listTemplates: function() {
@@ -551,12 +553,12 @@ module.exports = {
   },
   getTemplateByName: function(name) {
     var result = this.getUserTemplates().find(item => item.name === name);
-    if(typeof result === 'undefined') {
+    if (typeof result === 'undefined') {
       result = this.getSystemTemplates().find(item => item.name === name);
     } else if (typeof result === 'undefined') {
       result = null;
     }
-    return(result);
+    return (result);
   },
   addTemplate: function(temp) {
     var templates = this.getUserTemplates();
@@ -569,7 +571,7 @@ module.exports = {
     templates = templates.filter(item => item.name !== temp);
     this.saveUserTemplates(templates);
   },
-  runTemplate: function(templateName, template, text) { 
+  runTemplate: function(templateName, template, text) {
     var result = '';
     try {
       //
@@ -600,7 +602,7 @@ module.exports = {
       // Get the User's default data.
       //
       var defaultData = this.getTemplateByName('Defaults');
-      if(defaultData !== undefined) {
+      if (defaultData !== undefined) {
         data = this.MergeRecursive(data, JSON.parse(defaultData.template));
       }
       //
@@ -612,19 +614,19 @@ module.exports = {
       // Run the template with the data.
       //
       result = tpTemplate(data);
-      
+
       //
       // Make sure we have a string and not an array or object.
       //
-      if(typeof result != 'String') {
+      if (typeof result != 'String') {
         result = result.toString();
       }
 
     } catch (error) {
-        this.logger("Handlebars Error: " + error);
-        result = "There was an error.";
+      this.logger("Handlebars Error: " + error);
+      result = "There was an error.";
     }
-    return(result);
+    return (result);
   },
   //
   //  Function:        MergeRecursive
@@ -688,18 +690,18 @@ module.exports = {
     const firstPick = os.homedir() + "/Library/Application Support/Alfred/Workflow Data";
     const secondPick = os.homedir() + "/Library/Application Support/Alfred 2/Workflow Data";
     const thirdPick = os.homedir() + "/Library/Application Support/Alfred 3/Workflow Data";
-    if(fs.existsSync(firstPick)) {
+    if (fs.existsSync(firstPick)) {
       result = firstPick;
-    } else if(fs.existsSync(secondPick)) {
+    } else if (fs.existsSync(secondPick)) {
       result = secondPick;
-    } else if(fs.existsSync(thirdPick)) {
+    } else if (fs.existsSync(thirdPick)) {
       result = thirdPick;
     }
-    return(result);
+    return (result);
   },
   copyClipFileBeg: "/com.customct.CopyClips/copyclips/copy-",
   getCopyClip: function(clipNum) {
-    if(this.getAlfredDir !== '') {
+    if (this.getAlfredDir !== '') {
       return fs.readFileSync(this.getAlfredDir() + this.copyClipFileBeg + clipNum + ".txt")
     } else {
       return 'Alfred CopyClip workflow not installed.'
@@ -709,18 +711,18 @@ module.exports = {
     //
     // Save the clip to the clip number.
     //
-    if(this.getAlfredDir !== '') {
+    if (this.getAlfredDir !== '') {
       fs.writeFileSync(this.getAlfredDir() + this.copyClipFileBeg + clipNum + ".txt", clipText, 'utf8');
     }
   },
-  getAnswer: function( Question, Default ) {
+  getAnswer: function(Question, Default) {
     return this.queryUserDialog('question', Question, Default);
   },
-  queryUserDialog: function( dialog, ...options ) {
+  queryUserDialog: function(dialog, ...options) {
     var ans = '';
     var everything = '"' + dialog + '" "' + options.join('" "') + '"';
     ans = childProcess.execSync('bin/queryUser ' + everything);
-    return(ans);
+    return (ans);
   },
   getIP: function() {
     return ip.address();
@@ -729,7 +731,7 @@ module.exports = {
   // Some Node-Red specific items.
   //
   startRed: function(callback) {
-    if((typeof this.RED !== 'undefined') && (this.RED !== null) && (!this.REDSTARTED)) {
+    if ((typeof this.RED !== 'undefined') && (this.RED !== null) && (!this.REDSTARTED)) {
       this.RED.start().then(() => {
         this.REDSTARTED = true;
         callback();
@@ -737,7 +739,7 @@ module.exports = {
     }
   },
   stopRed: function(callback) {
-    if(this.REDSTARTED) {
+    if (this.REDSTARTED) {
       this.REDSTARTED = false;
       this.RED.stop();
       callback();
@@ -763,13 +765,13 @@ module.exports = {
     //
     // Check for directory structure present and properly initialized.
     //
-    if(!fs.existsSync(this.NodeRedHome)) {
+    if (!fs.existsSync(this.NodeRedHome)) {
       //
       // Create the Node-Red home.
       //
       fs.mkdirSync(this.NodeRedHome);
     }
-    if(!fs.existsSync(this.NodeRedHome + "node_modules/")) {
+    if (!fs.existsSync(this.NodeRedHome + "node_modules/")) {
       //
       // Create and populate the node modules directories and files.
       //
@@ -778,14 +780,14 @@ module.exports = {
       //
       // Copy the modules for working with Node-Red and ScriptPad.
       //
-      this.copyRecursiveSync(this.SERVERLOCATION + "/nodered_modules/",this.NodeRedHome + "node_modules");
+      this.copyRecursiveSync(this.SERVERLOCATION + "/nodered_modules/", this.NodeRedHome + "node_modules");
     }
 
     //
     // Initialize the system.
     //
     this.RED = nodered;
-    if((typeof this.RED !== 'undefined') && (this.RED !== null)) {
+    if ((typeof this.RED !== 'undefined') && (this.RED !== null)) {
       // Create the settings object - see default settings.js file for other options
       var that = this;
       var settings = {
@@ -799,7 +801,7 @@ module.exports = {
           projects: {
             enabled: false
           }
-        }, 
+        },
         logging: {
           // Console logging
           console: {
@@ -827,27 +829,27 @@ module.exports = {
       };
 
       // Initialise the runtime with a server and settings
-      this.RED.init(this.httpServer,settings);
+      this.RED.init(this.httpServer, settings);
 
       // Serve the editor UI from /red
-      this.app.use(settings.httpAdminRoot,this.RED.httpAdmin);
+      this.app.use(settings.httpAdminRoot, this.RED.httpAdmin);
 
       // Serve the http nodes UI from /api
-      this.app.use(settings.httpNodeRoot,this.RED.httpNode);
+      this.app.use(settings.httpNodeRoot, this.RED.httpNode);
     }
   },
   //
   // Set a Node-Red Variable
   //
-  SetRedVar: function(name,val) {
+  SetRedVar: function(name, val) {
     this.REDVARS[name] = val;
 
     //
     // Send it to anyone needing the information on 
     // Websockets.
     //
-    if(typeof this.io !== 'undefined') {
-      if(typeof val !== 'undefined') {
+    if (typeof this.io !== 'undefined') {
+      if (typeof val !== 'undefined') {
         this.logger(`Set Red Var (name, value): ${name}, ${JSON.stringify(val, null, 2)}.`);
         this.io.emit('varchanged', {
           variable: name,
@@ -864,17 +866,17 @@ module.exports = {
   //
   GetRedVar: function(name) {
     var result = null;
-    if(typeof this.REDVARS[name] !== 'undefined') {
+    if (typeof this.REDVARS[name] !== 'undefined') {
       this.logger(`Get Red Var (name, value): ${name}, ${JSON.stringify(this.REDVARS[name], null, 2)}.`);
       result = this.REDVARS[name];
     }
-    return(result);
+    return (result);
   },
   //
   // Get the array of Node-Red variables.
   //
   GetRedVarArray: function() {
-    return(this.REDVARS);
+    return (this.REDVARS);
   },
   //
   // This section is for working with the script environments
@@ -889,31 +891,36 @@ module.exports = {
       name: 'Default',
       envVar: process.env
     }
-    return(newEnv);
+    return (newEnv);
   },
   getEnvNames: function() {
-    if(this.scriptEnv === null) {
+    if (this.scriptEnv === null) {
       this.scriptEnv = this.loadEnv();
     }
-    return(this.scriptEnv.map((item) => item.name));
+    return (this.scriptEnv.map((item) => item.name));
   },
   addEnv: function(env) {
-    if(this.scriptEnv === null) {
-      this.scriptEnv = this.loadEnv();
+    if ((env !== null) && (env !== {})) {
+      if (this.scriptEnv === null) {
+        this.scriptEnv = this.loadEnv();
+      }
+      var newScriptEnv = this.scriptEnv.find(item => item.name === env.name);
+      if (typeof newScriptEnv === 'undefined') {
+        this.scriptEnv.push(env);
+      } else {
+        this.scriptEnv = this.scriptEnv.map(item => {
+          if (item.name === env.name) {
+            return env;
+          } else {
+            return item;
+          }
+        });
+      }
+      this.saveEnv();
     }
-    var newScriptEnv = this.scriptEnv.find(item => item.name === env.name);
-    if(typeof newScriptEnv === 'undefined') {
-      this.scriptEnv.push(env);
-    } else {
-      this.scriptEnv = this.scriptEnv.map(item => {
-        if(item.name === env.name) item = env;
-        return(item);
-      });
-    }
-    this.saveEnv();
   },
   removeEnv: function(oldEnv) {
-    if(this.scriptEnv === null) {
+    if (this.scriptEnv === null) {
       this.scriptEnv = this.loadEnv();
     }
     this.scriptEnv = this.scriptEnv.filter(env => env.name !== oldEnv);
@@ -932,10 +939,10 @@ module.exports = {
       this.scriptEnv = [];
       this.saveEnv();
     }
-    return(this.scriptEnv)
+    return (this.scriptEnv)
   },
   saveEnv: function() {
-    if(this.scriptEnv === null) {
+    if (this.scriptEnv === null) {
       this.scriptEnv = this.loadEnv();
     }
     fs.writeFileSync(this.ENVIRONMENTVARIABLESFILELOC, JSON.stringify(this.scriptEnv));
@@ -944,17 +951,17 @@ module.exports = {
     //
     // Make sure name is a string.
     //
-    if(typeof name !== 'string') name = new String(name);
+    if (typeof name !== 'string') name = new String(name);
 
     //
     // See if it have a lowercase for default.
     //
-    if(name.includes('default')) name = "Default";
+    if (name.includes('default')) name = "Default";
 
     //
     // Make sure the environments are loaded.
     //
-    if(this.scriptEnv === null) {
+    if (this.scriptEnv === null) {
       this.scriptEnv = this.loadEnv();
     }
 
@@ -962,8 +969,8 @@ module.exports = {
     // If it doens't find the envionment, return an empty env.
     //
     var tmpEnv = this.scriptEnv.find((env) => env.name === name);
-    if(typeof tmpEnv === 'undefined') tmpEnv = [];
-    return(tmpEnv);
+    if (typeof tmpEnv === 'undefined') tmpEnv = [];
+    return (tmpEnv);
   },
   //
   // This section is for external script control.
@@ -976,34 +983,34 @@ module.exports = {
   // }
   //
   listExtScripts: function() {
-    if(this.extScripts === null) {
+    if (this.extScripts === null) {
       this.extScripts = this.loadExtScripts();
     }
-    return(this.extScripts.map((es) => es.name));
+    return (this.extScripts.map((es) => es.name));
   },
   addExtScript: function(newScript) {
-    if(this.extScripts === null) {
+    if (this.extScripts === null) {
       this.extScripts = this.loadExtScripts();
     }
     var extScript = this.extScripts.find(item => item.name === newScript.name);
-    if(typeof extScript === 'undefined') {
+    if (typeof extScript === 'undefined') {
       this.extScripts.push(newScript);
     } else {
       this.extScripts = this.extScripts.map(item => {
-        if(item.name === newScript.name) item = newScript;
-        return(item);
+        if (item.name === newScript.name) item = newScript;
+        return (item);
       });
     }
     this.saveExtScripts();
   },
   getExtScript: function(scriptName) {
-    if(this.extScripts === null) {
+    if (this.extScripts === null) {
       this.extScripts = this.loadExtScripts();
     }
     return this.extScripts.find((es) => es.name === scriptName);
   },
   saveExtScripts: function() {
-    if(this.extScripts === null) {
+    if (this.extScripts === null) {
       this.extScripts = this.loadExtScripts();
     }
     fs.writeFileSync(this.EXTSCRIPTSFILELOC, JSON.stringify(this.extScripts));
@@ -1021,10 +1028,10 @@ module.exports = {
       this.extScripts = [];
       this.saveExtScripts();
     }
-    return(this.extScripts)
+    return (this.extScripts)
   },
   removeExtScript: function(info) {
-    if(this.extScripts === null) {
+    if (this.extScripts === null) {
       this.extScripts = this.loadExtScripts();
     }
     this.extScripts = this.extScripts.filter(item => { return item.name !== info; });
@@ -1038,12 +1045,12 @@ module.exports = {
     // Get the environment.
     //
     env = this.getEnv('Default');
-    if(env !== 'undefined') {
+    if (env !== 'undefined') {
       env = env.envVar;
     } else {
       env = {};
     }
-   
+
     //
     // Add any new environment variables.
     //
@@ -1051,19 +1058,19 @@ module.exports = {
       this.logger('Run command...');
       this.logger(command + " &");
       childProcess.exec(command + " &", {
-          env: env,
-          cwd: this.HOME
-        }, (err, stdin, stdout) => {
+        env: env,
+        cwd: this.HOME
+      }, (err, stdin, stdout) => {
         result = stdin;
-        if(err) {
+        if (err) {
           this.logger(err.toString());
         }
       });
-    } catch(e) {
+    } catch (e) {
       result = "Error: " + e.message;
       this.logger(e.message);
     }
-    return(result);
+    return (result);
   },
   runExtScript: function(extScript, info) {
     //
@@ -1080,35 +1087,35 @@ module.exports = {
     var result = '';
     var env = {};
 
-    if(this.extScripts === null) {
+    if (this.extScripts === null) {
       this.extScripts = this.loadExtScripts();
     }
 
     //
     // Get the environment.
     //
-    if(info.env !== '') {
+    if (info.env !== '') {
       env = this.getEnv(info.env);
-      if(env !== 'undefined') {
+      if (env !== 'undefined') {
         env = env.envVar;
       } else {
         env = {};
       }
-    } else if(extScript.env !== '') {
+    } else if (extScript.env !== '') {
       env = this.getEnv(extScript.env);
-      if(env !== 'undefined') {
+      if (env !== 'undefined') {
         env = env.envVar;
       } else {
         env = {};
       }
     }
-   
+
     //
     // Add any new environment variables.
     //
-    env = {...env, ...info.envVar};
+    env = { ...env, ...info.envVar };
     try {
-      if((info.commandLine !== null)&&(typeof info.commandLine !== 'undefined')) {
+      if ((info.commandLine !== null) && (typeof info.commandLine !== 'undefined')) {
         result = childProcess.execFileSync('./' + extScript.script, info.commandLine.split(' '), {
           env: env,
           cwd: extScript.path,
@@ -1123,11 +1130,11 @@ module.exports = {
           encoding: 'utf8'
         });
       }
-      if(typeof result === 'object') result = result.toString();
-    } catch(e) {
+      if (typeof result === 'object') result = result.toString();
+    } catch (e) {
       result = "Error: " + e.message;
     }
-    return(result);
+    return (result);
   },
   //
   // These functions are for handling accounts for the EmailIt
@@ -1138,7 +1145,7 @@ module.exports = {
   },
   getAccounts: function() {
     var acc = [];
-    if(fs.existsSync(this.EMAILACCOUNTSFILELOC)) {
+    if (fs.existsSync(this.EMAILACCOUNTSFILELOC)) {
       acc = JSON.parse(fs.readFileSync(this.EMAILACCOUNTSFILELOC));
     }
     return acc;
@@ -1146,7 +1153,7 @@ module.exports = {
   saveAccount: function(acc) {
     var accounts = this.getAccounts();
     var orig = accounts.filter(item => (item.name === acc.name));
-    if(orig.length > 0) {
+    if (orig.length > 0) {
       this.deleteAccount(acc);
       accounts = this.getAccounts();
     }
@@ -1160,7 +1167,7 @@ module.exports = {
   },
   saveNewEmail: function(name, email) {
     var emails;
-    if(fs.existsSync(this.EMAILADDRESSFILELOC)) {
+    if (fs.existsSync(this.EMAILADDRESSFILELOC)) {
       emails = JSON.parse(fs.readFileSync(this.EMAILADDRESSFILELOC));
       emails = emails.filter(item => item.email !== email);
     } else {
@@ -1174,7 +1181,7 @@ module.exports = {
   },
   deleteNewEmail: function(email) {
     var emails;
-    if(fs.existsSync(this.EMAILADDRESSFILELOC)) {
+    if (fs.existsSync(this.EMAILADDRESSFILELOC)) {
       emails = JSON.parse(fs.readFileSync(this.EMAILADDRESSFILELOC));
       emails = emails.filter(item => item.email !== email);
     } else {
@@ -1184,23 +1191,23 @@ module.exports = {
   },
   getEmails: function() {
     var emails;
-    if(fs.existsSync(this.EMAILADDRESSFILELOC)) {
+    if (fs.existsSync(this.EMAILADDRESSFILELOC)) {
       emails = JSON.parse(fs.readFileSync(this.EMAILADDRESSFILELOC));
     } else {
       emails = [];
     }
-    return(emails);
+    return (emails);
   },
 
   //
   // This section deals with themes.
   //
   getCurrentTheme: function() {
-    if(fs.existsSync(this.THEMEFILELOC)) {
-      return(fs.readFileSync(this.THEMEFILELOC));
+    if (fs.existsSync(this.THEMEFILELOC)) {
+      return (JSON.parse(fs.readFileSync(this.THEMEFILELOC)));
     } else {
       var theme = {
-        name: "default",
+        name: "Default",
         font: "Fira Code, Menlo",
         fontSize: "16pt",
         textAreaColor: '#454158',
@@ -1263,22 +1270,39 @@ module.exports = {
           },
         ]
       };
-      this.saveTheme(theme);
-      return(theme);
+      this.saveTheme("Default", theme);
+      return (theme);
     }
   },
   getThemes: function() {
-    var result = ['default'];
+    var result = ['Default'];
 
-    if(fs.existsSync(this.THEMELOC)) {
+    if (fs.existsSync(this.THEMELOC)) {
+      let list = fs.readdirSync(this.THEMELOC);
+      result = list.map(item => item.split('.')[0]);
+    } else {
+      fs.mkdirSync(this.THEMELOC);
+      let thm = this.getCurrentTheme();
+      thm.name = "Default";
+      this.saveTheme('Default', thm);
     }
-
-    return(result);
+    return (result);
   },
-  saveTheme: function(theme) {
-    
+  getTheme: function(theme) {
+    let thm = fs.readFileSync(`${this.THEMELOC}/${theme}.json`)
+    return JSON.parse(thm);
   },
-  deleteTheme: function (theme) {
-    
+  saveTheme: function(nm, theme) {
+    if (!fs.existsSync(this.THEMELOC)) {
+      fs.mkdirSync(this.THEMELOC);
+    }
+    if (typeof theme === "string") {
+      theme = JSON.parse(theme);
+    }
+    theme.name = nm;
+    fs.writeFileSync(`${this.THEMELOC}/${nm}.json`, JSON.stringify(theme));
+  },
+  deleteTheme: function(theme) {
+    fs.unlinkSync(`${this.THEMELOC}/${theme}.json`);
   }
 }
