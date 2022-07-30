@@ -121,6 +121,11 @@ module.exports = {
     this.EMAILADDRESSFILELOC = this.CONFIGDIR + '/emails.json';
     this.THEMELOC = this.CONFIGDIR + '/styles';
 
+    //
+    // Initial fetching to make sure directory structure is setup.
+    //
+    this.getThemes();
+    this.getScripts();
     this.setupHandlebarHelpers();
   },
 
@@ -213,6 +218,29 @@ module.exports = {
       scriptObj = this.getSystemScripts().find(value => value.name == script)
     }
     return scriptObj.script
+  },
+
+  //
+  // Function:         runJavaScriptScriptsFile
+  //
+  // Description:      This will run the JavaScript function on the contents of a file.
+  //
+  // Inputs:
+  //                   script          The script.
+  //                   text            The text to process.
+  //
+  runJavaScriptScriptsFile: function(script, file) {
+    let result = "Invalid File";
+    if (fs.existsSync(file)) {
+      result = new String(fs.readFileSync(file));
+      result = this.runJavaScriptScripts(script, result);
+      let ext = path.extname(file);
+      let dname = path.dirname(file);
+      let bname = path.basename(file, ext);
+      fs.writeFileSync(path.join(dname, `${bname}-processed${ext}`), result);
+      result = `${bname}-processed${ext} was created!`;
+    }
+    return (result);
   },
 
   //

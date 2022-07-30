@@ -112,12 +112,24 @@ module.exports = (router, express, ScriptPad) => {
 
   router.route('/scripts/list').get((req, res, next) => {
     res.json({
-      data: ScriptPad.getScripts().map(value => {
+      data: ScriptPad.getScripts().filter(value => value.termscript === false).map(value => {
         return { name: value.name, insert: value.insert }
-      }).concat(ScriptPad.getSystemScripts().map(value => {
+      }).concat(ScriptPad.getSystemScripts().filter(value => value.termscript === false).map(value => {
         return { name: value.name, insert: value.insert }
-      })).concat(ScriptPad.listExtScripts().map(value => {
+      })).concat(ScriptPad.listExtScripts().filter(value => value.termscript === false).map(value => {
         return { name: value, insert: false }
+      }))
+    });
+  })
+
+  router.route('/scripts/term/list').get((req, res, next) => {
+    res.json({
+      data: ScriptPad.getScripts().filter(value => value.termscript === true).map(value => {
+        return { name: value.name, description: value.description, help: value.help }
+      }).concat(ScriptPad.getSystemScripts().filter(value => value.termscript === true).map(value => {
+        return { name: value.name, description: value.description, help: value.help }
+      })).concat(ScriptPad.listExtScripts().filter(value => value.termscript === true).map(value => {
+        return { name: value.name, description: value.description, help: value.help }
       }))
     });
   })
@@ -167,9 +179,15 @@ module.exports = (router, express, ScriptPad) => {
     var scriptIndex = scriptArray.find((ele) => { return ele.name === req.body.script })
     if (typeof scriptIndex !== 'undefined') {
       script = scriptIndex.script;
-      res.json({
-        text: ScriptPad.runJavaScriptScripts(script, req.body.text)
-      });
+      if (typeof req.body.file !== 'undefined' && req.body.file.length > 0) {
+        res.json({
+          text: ScriptPad.runJavaScriptScriptsFile(script, req.body.file)
+        });
+      } else {
+        res.json({
+          text: ScriptPad.runJavaScriptScripts(script, req.body.text)
+        });
+      }
     } else {
       scriptIndex = ScriptPad.getExtScript(req.body.script);
       if (typeof scriptIndex !== 'undefined') {
@@ -190,9 +208,15 @@ module.exports = (router, express, ScriptPad) => {
         } else {
           script = { script: "SP.text = 'Error: Not a Script.';" }
         }
-        res.json({
-          text: ScriptPad.runJavaScriptScripts(script, req.body.text)
-        })
+        if (typeof req.body.file !== 'undefined' && req.body.file.length > 0) {
+          res.json({
+            text: ScriptPad.runJavaScriptScriptsFile(script, req.body.file)
+          });
+        } else {
+          res.json({
+            text: ScriptPad.runJavaScriptScripts(script, req.body.text)
+          });
+        }
       }
     }
   })
@@ -280,7 +304,7 @@ module.exports = (router, express, ScriptPad) => {
   router.route('/scriptbar/config').get((req, res, next) => {
     if (fs.existsSync(ScriptPad.SCRIPTBARPREFERENCES)) {
       res.json({
-        config: JSON.parse(fs.readFileSync(ScriptPad.SCRIPTBARPREFERENCES).toString())
+        config: JSON.parse(fs.readFileSync(ScriptPad.SCRIPTBARPREFERENCES))
       });
     } else {
       res.json({
