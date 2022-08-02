@@ -362,5 +362,29 @@ module.exports = [
     "help": "runscript <scriptname>,<file>|<text>\n\r    This command will run the script on the file given or on the text given. The two argument are separated by a comma. The text has to be surrounded by quotes.",
     "script": "SP.text = JSON.stringify({\n  tcommand: `runscript ${SP.text}`,\n  lines: []\n});",
     "termscript": true
+  },
+  {
+    "name": "edit",
+    "insert": false,
+    "description": "Edit the given file.",
+    "help": "edit <file>\n\r    This command will edit the given file.",
+    "script": "SP.text = JSON.stringify({\n  tcommand: `edit ${SP.text}`,\n  lines: []\n});",
+    "termscript": true
+  },
+  {
+    "name": "alias",
+    "insert": false,
+    "description": "The alais command allows you to substitute a single command for a list of commands.",
+    "help": "alias <name>=<commands>\n\r     This command will run the comma separated list of commands when the name is ran.",
+    "script": "SP.text = JSON.stringify({\n  tcommand: `alias ${SP.text}`,\n  lines: []\n});",
+    "termscript": true
+  },
+  {
+    "name": "hist",
+    "insert": false,
+    "description": "The hist command lists the previous command lines that worked. You can activate one to rerun the command.",
+    "help": "hist <depth>\n\r     This command displays the previously ran commands to select one for running again. If a depth is given, it will try to display that many commands. The default depth is 5.",
+    "script": "SP.text = JSON.stringify({\n  tcommand: `hist ${SP.text}`,\n  lines: []\n});",
+    "termscript": true
   }
 ]
