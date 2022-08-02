@@ -10,7 +10,7 @@ const mathjs = require('mathjs');
 const fs = require('fs');
 const fsex = require('fs-extra');
 const childProcess = require('child_process');
-const clipboardy = require('clipboardy');
+const clipboard = require('copy-paste');
 
 module.exports = {
   //
@@ -540,7 +540,7 @@ module.exports = {
     });
 
     this.Handlebars.registerHelper('clipboard', function() {
-      return clipboardy.readSync();
+      return clipboard.paste();
     });
 
     this.Handlebars.registerHelper('date', function(dFormat) {
@@ -1334,3 +1334,4 @@ module.exports = {
     fs.unlinkSync(`${this.THEMELOC}/${theme}.json`);
   }
 }
+

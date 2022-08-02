@@ -2,8 +2,8 @@ var express = require('express');
 var ApiRoutes = require('./modules/ApiRoutes.js');
 var PublicRoutes = require('./modules/PublicRoutes.js');
 var http = require('http');
-var ScriptPad = require('./modules/ScriptPad.js');
 var cors = require('cors');
+const ScriptPad = require('./modules/ScriptPad.js');
 
 //
 // Initialize the ScriptPad object.
@@ -46,16 +46,16 @@ ScriptPad.app.use('/', pubServerRouter)
 // Create the server.
 //
 ScriptPad.httpServer = http.createServer(ScriptPad.app, {
-        log: false,
-        agent: false,
-        origins: '*'
-    });
+  log: false,
+  agent: false,
+  origins: '*'
+});
 
 //
 // Initialize Node-Red
 //
 ScriptPad.initNodeRed(ScriptPad.logger);
-ScriptPad.startRed(()=>{ ScriptPad.logger("Node Red Started...")});
+ScriptPad.startRed(() => { ScriptPad.logger("Node Red Started...") });
 
 //
 // Run the server:
