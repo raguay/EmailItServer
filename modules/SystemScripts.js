@@ -386,5 +386,29 @@ module.exports = [
     "help": "hist <depth>\n\r     This command displays the previously ran commands to select one for running again. If a depth is given, it will try to display that many commands. The default depth is 5.",
     "script": "SP.text = JSON.stringify({\n  tcommand: `hist ${SP.text}`,\n  lines: []\n});",
     "termscript": true
+  },
+  {
+    "name": "rm",
+    "insert": false,
+    "description": "  The rm command will delete the given file or directory. If nothing is given, it will list the current directory and an item can be delete using the command mode and r.",
+    "help": "rm <filedir>\n\r     If filedir is blank, then the current directory is listed and an item can be deleted using the command mode and r. Otherwise, the given file/directory is deleted.",
+    "script": "SP.text = JSON.stringify({\n  tcommand: `rm ${SP.text}`,\n  lines: []\n});",
+    "termscript": true
+  },
+  {
+    "name": "mkdir",
+    "insert": false,
+    "description": "The mkdir command makes the given directory if it doesn't already exist.",
+    "help": "mkdir <dir>\n\r     Create the given dir if it doesn't already exist.",
+    "script": "SP.text = JSON.stringify({\n  tcommand: `mkdir ${SP.text}`,\n  lines: []\n});",
+    "termscript": true
+  },
+  {
+    "name": "mkfile",
+    "insert": false,
+    "description": "The mkfile command makes the given file if it doesn't already exist.",
+    "help": "mkfile <file>\n\r     Create the given file if it doesn't already exist.",
+    "script": "SP.text = JSON.stringify({\n  tcommand: `mkfile ${SP.text}`,\n  lines: []\n});",
+    "termscript": true
   }
 ]
