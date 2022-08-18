@@ -41,9 +41,4 @@ module.exports = (router, express) => {
   maindir = path.dirname(maindir);
   maindir = path.dirname(maindir);
   router.use('/', express.static(maindir + '/ScriptServer/public'))
-  router.use('/docs', express.static(maindir + '/docs'))
-  router.use('/imgs', express.static(maindir + '/imgs'))
-  router.use('/dir', (req, res, next) => {
-    res.send(maindir);
-  });
 }
