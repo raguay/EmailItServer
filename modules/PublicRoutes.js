@@ -1,3 +1,6 @@
+const path = require('path');
+const process = require('process');
+
 module.exports = (router, express) => {
   //
   // Here, we need to setup the middleware for the router. The first
@@ -34,8 +37,13 @@ module.exports = (router, express) => {
     extended: true,
     limit: '10mb'
   })) // for parsing application/x-www-form-urlencoded
-  
-  router.use('/', express.static('ScriptServer/public'))
-  router.use('/docs', express.static('docs'))
-  router.use('/imgs', express.static('imgs'))
+  var maindir = path.dirname(process.execPath);
+  maindir = path.dirname(maindir);
+  maindir = path.dirname(maindir);
+  router.use('/', express.static(maindir + '/ScriptServer/public'))
+  router.use('/docs', express.static(maindir + '/docs'))
+  router.use('/imgs', express.static(maindir + '/imgs'))
+  router.use('/dir', (req, res, next) => {
+    res.send(maindir);
+  });
 }

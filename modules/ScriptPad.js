@@ -53,7 +53,8 @@ module.exports = {
   EXTSCRIPTSFILELOC: '',
   EMAILACCOUNTSFILELOC: '',
   EMAILADDRESSFILELOC: '',
-  THEMELOC: '',
+  THEMEFILE: '',
+  THEMEDIR: '',
   SERVERON: true,
 
   //
@@ -119,7 +120,8 @@ module.exports = {
     this.ENVIRONMENTVARIABLESFILELOC = this.CONFIGDIR + '/environments.json';
     this.EMAILACCOUNTSFILELOC = this.CONFIGDIR + '/emailaccounts.json';
     this.EMAILADDRESSFILELOC = this.CONFIGDIR + '/emails.json';
-    this.THEMELOC = this.CONFIGDIR + '/styles';
+    this.THEMEDIR = this.CONFIGDIR + '/styles';
+    this.THEMEFILE = this.CONFIGDIR + '/theme.json';
 
     //
     // Initial fetching to make sure directory structure is setup.
@@ -1014,7 +1016,7 @@ module.exports = {
     if (this.extScripts === null) {
       this.extScripts = this.loadExtScripts();
     }
-    return (this.extScripts.map((es) => es.name));
+    return (this.extScripts);
   },
   addExtScript: function(newScript) {
     if (this.extScripts === null) {
@@ -1083,8 +1085,6 @@ module.exports = {
     // Add any new environment variables.
     //
     try {
-      this.logger('Run command...');
-      this.logger(command + " &");
       childProcess.exec(command + " &", {
         env: env,
         cwd: this.HOME
@@ -1100,60 +1100,46 @@ module.exports = {
     }
     return (result);
   },
-  runExtScript: function(extScript, info) {
-    //
-    // info.script    - Name of the script - a string
-    // info.env       - Environment name to run the script - 'default' : Environment defined by the script.
-    // info.envVar    - Additional environment variables - key, value pairs
-    // info.commandLine - Command line for the script - a string
+  runExtScript: function(extScrpt, body, info) {
     //
     // extScript.name     - File name of the script
     // extScript.script   - User name for the script
     // extScript.path     - directory of the script
     // extScript.env      - name of the environment
+    // extScript.termscript - Boolean true if a script terminal script.
+    // extScript.description - Description of what the script does.
+    // extScript.help     - A help message for the script
     //
     var result = '';
     var env = {};
 
-    if (this.extScripts === null) {
-      this.extScripts = this.loadExtScripts();
-    }
-
     //
     // Get the environment.
     //
-    if (info.env !== '') {
-      env = this.getEnv(info.env);
-      if (env !== 'undefined') {
-        env = env.envVar;
-      } else {
-        env = {};
-      }
-    } else if (extScript.env !== '') {
-      env = this.getEnv(extScript.env);
+    if (extScrpt.env !== '') {
+      env = this.getEnv(extScrpt.env);
       if (env !== 'undefined') {
         env = env.envVar;
       } else {
         env = {};
       }
     }
-
-    //
-    // Add any new environment variables.
-    //
-    env = { ...env, ...info.envVar };
+    if (info !== null && typeof info.envVar !== 'undefined') {
+      env = { ...env, ...info.envVar };
+    }
     try {
-      if ((info.commandLine !== null) && (typeof info.commandLine !== 'undefined')) {
-        result = childProcess.execFileSync('./' + extScript.script, info.commandLine.split(' '), {
+      let args = [];
+      args.push(body);
+      if (info !== null && typeof info.commandLine !== 'undefined' && info.commandLine !== '') {
+        result = childProcess.execSync(info.commandLine, {
           env: env,
-          cwd: extScript.path,
           shell: '/bin/sh',
           encoding: 'utf8'
         });
       } else {
-        result = childProcess.execFileSync('./' + extScript.script, [], {
+        result = childProcess.execFileSync('./' + extScrpt.script, args, {
           env: env,
-          cwd: extScript.path,
+          cwd: extScrpt.path,
           shell: '/bin/sh',
           encoding: 'utf8'
         });
@@ -1231,8 +1217,8 @@ module.exports = {
   // This section deals with themes.
   //
   getCurrentTheme: function() {
-    if (fs.existsSync(this.THEMEFILELOC)) {
-      return (JSON.parse(fs.readFileSync(this.THEMEFILELOC)));
+    if (fs.existsSync(this.THEMEFILE)) {
+      return (JSON.parse(fs.readFileSync(this.THEMEFILE)));
     } else {
       var theme = {
         name: "Default",
@@ -1305,11 +1291,11 @@ module.exports = {
   getThemes: function() {
     var result = ['Default'];
 
-    if (fs.existsSync(this.THEMELOC)) {
-      let list = fs.readdirSync(this.THEMELOC);
+    if (fs.existsSync(this.THEMEDIR)) {
+      let list = fs.readdirSync(this.THEMEDIR);
       result = list.map(item => item.split('.')[0]);
     } else {
-      fs.mkdirSync(this.THEMELOC);
+      fs.mkdirSync(this.THEMEDIR);
       let thm = this.getCurrentTheme();
       thm.name = "Default";
       this.saveTheme('Default', thm);
@@ -1317,21 +1303,54 @@ module.exports = {
     return (result);
   },
   getTheme: function(theme) {
-    let thm = fs.readFileSync(`${this.THEMELOC}/${theme}.json`)
+    let thmconfig = fs.readFileSync(`${this.THEMEDIR}/${theme}/package.json`);
+    thmconfig = JSON.parse(thmconfig);
+    let thmfile = thmconfig.theme.main;
+    let thm = fs.readFileSync(`${this.THEMEDIR}/${theme}/${thmfile}`)
     return JSON.parse(thm);
   },
   saveTheme: function(nm, theme) {
-    if (!fs.existsSync(this.THEMELOC)) {
-      fs.mkdirSync(this.THEMELOC);
+    if (!fs.existsSync(this.THEMEDIR)) {
+      fs.mkdirSync(this.THEMEDIR);
     }
     if (typeof theme === "string") {
       theme = JSON.parse(theme);
     }
     theme.name = nm;
-    fs.writeFileSync(`${this.THEMELOC}/${nm}.json`, JSON.stringify(theme));
-  },
-  deleteTheme: function(theme) {
-    fs.unlinkSync(`${this.THEMELOC}/${theme}.json`);
+    let themedir = `${this.THEMEDIR}/${nm}`;
+    if (!fs.existsSync(themedir)) {
+      fs.mkdirSync(themedir);
+      fs.writeFileSync(`${themedir}/package.json`, `
+{
+  "name": "${nm}",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "emailit", "theme"
+  ],
+  "author": "",
+  "license": "MIT",
+  "theme": {
+    "name": "${nm}",
+    "description": "",
+    "type": 0,
+    "github": "",
+    "main": "${nm}.json"
   }
 }
-
+`);
+      nm = nm + '.json';
+    } else {
+      let thmcfg = fs.readFileSync(`${themedir}/package.json`);
+      thmcfg = JSON.parse(thmcfg);
+      nm = thmcfg.theme.main;
+    }
+    fs.writeFileSync(`${themedir}/${nm}`, JSON.stringify(theme));
+    fs.writeFileSync(`${this.THEMEFILE}`, JSON.stringify(theme));
+  },
+  deleteTheme: function(theme) {
+    fs.rmSync(`${this.THEMEDIR}/${theme}`, {
+      recursive: true
+    });
+  }
+}

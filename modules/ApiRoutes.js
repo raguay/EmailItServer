@@ -16,15 +16,17 @@ module.exports = (router, express, ScriptPad) => {
     // We need to do some security checking on all the API calls.
     //
     var okay = true
-    var requesterIP = req.ip.split('.')
-    var localIP = req.connection.localAddress.split('.')
-    if ((requesterIP[0] === localIP[0]) && (requesterIP[1] === localIP[1]) && (requesterIP[2] === localIP[2])) {
-      //
-      // Okay, the request is within our sub-domain. You can allow it.
-      //
-      okay = true
-    } else {
-      okay = false
+    if (typeof req.ip !== 'undefined') {
+      var requesterIP = req.ip.split('.')
+      var localIP = req.connection.localAddress.split('.')
+      if ((requesterIP[0] === localIP[0]) && (requesterIP[1] === localIP[1]) && (requesterIP[2] === localIP[2])) {
+        //
+        // Okay, the request is within our sub-domain. You can allow it.
+        //
+        okay = true
+      } else {
+        okay = false
+      }
     }
     //
     // If okay is true, proceed. Otherwise, just drop out.
@@ -117,7 +119,7 @@ module.exports = (router, express, ScriptPad) => {
       }).concat(ScriptPad.getSystemScripts().filter(value => value.termscript === false).map(value => {
         return { name: value.name, insert: value.insert }
       })).concat(ScriptPad.listExtScripts().filter(value => value.termscript === false).map(value => {
-        return { name: value, insert: false }
+        return { name: value.name, insert: false }
       }))
     });
   })
@@ -195,7 +197,7 @@ module.exports = (router, express, ScriptPad) => {
         // It's an external script.
         //
         res.json({
-          text: ScriptPad.runExtScript(scriptIndex, req.body)
+          text: ScriptPad.runExtScript(scriptIndex, req.body.text, req.body)
         })
       } else {
         //
