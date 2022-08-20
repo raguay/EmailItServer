@@ -305,7 +305,6 @@ module.exports = {
       },
       returnNote: function(id) {
         var result = '';
-        id = id - 1;
         if ((id >= 0) && (id <= 9)) result = that.NOTES[id];
         return result;
       },
@@ -385,7 +384,7 @@ module.exports = {
     if ((body === null) || (typeof body === 'undefined')) {
       body = ""
     }
-    if ((noteid >= 0) && (noteid <= 8)) {
+    if ((noteid >= 0) && (noteid <= 9)) {
       this.readNotesFile()
       this.NOTES[noteid] = body
       this.writeNotesFile()
@@ -416,18 +415,8 @@ module.exports = {
           //
           fs.mkdirSync(this.NOTESDIR)
         }
-        this.NOTES = []
-        this.NOTES[0] = ""
-        this.NOTES[1] = ""
-        this.NOTES[2] = ""
-        this.NOTES[3] = ""
-        this.NOTES[4] = ""
-        this.NOTES[5] = ""
-        this.NOTES[6] = ""
-        this.NOTES[7] = ""
-        this.NOTES[8] = ""
-        this.NOTES[9] = ""
-        this.writeNotesFile()
+        this.NOTES = ["", "", "", "", "", "", "", "", "", ""];
+        this.writeNotesFile();
       }
     }
   },
