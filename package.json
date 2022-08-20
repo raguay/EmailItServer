@@ -6,11 +6,14 @@
   "bin": "server.js",
   "scripts": {
     "dev": "node server.js",
-    "build": "caxa -i . -o EmailItServer -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/server.js'"
+    "build": "rm EmailItServer; caxa -i . -o EmailItServer -- '{{caxa}}/node_modules/.bin/node' '{{caxa}}/server.js'"
   },
   "keywords": [
     "smpt",
-    "email"
+    "email",
+    "notes",
+    "scripts",
+    "templates"
   ],
   "author": "Richard Guay",
   "license": "MIT",
